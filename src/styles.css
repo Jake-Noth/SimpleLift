@@ -1,0 +1,23 @@
+
+
+
+.header {
+    display: flex;
+    flex-direction: row;
+    height: 7vh;
+}
+
+#logo { 
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    padding-left: 2vw;
+    padding-top: 1vw;
+}
+
+#signInButton {
+    margin-left: 60vw;
+    height: 50px;
+    width: 80px;
+    border-radius: 10%;
+}

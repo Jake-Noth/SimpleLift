@@ -1,7 +1,7 @@
 import { useState } from "react";
-
 import CoreApp from "./components/CoreApp";
 import LandingPage from "./components/LandingOrSignIn";
+import './styles.css'
 
 export default function App() {
 
