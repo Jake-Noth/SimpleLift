@@ -1,10 +1,16 @@
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
 
 .header {
+    padding-top: .5vh;
     display: flex;
     flex-direction: row;
     height: 7vh;
+    border-bottom: 2px solid black;
 }
 
 #logo { 
@@ -21,3 +27,17 @@
     width: 80px;
     border-radius: 10%;
 }
+
+.cog-button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin-left: 70vw;
+    margin-top: 2vh;
+    background-color: transparent;
+    background-image: url('public/settingsCog.png'); /* Add your SVG cog image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    outline: none;
+  }
