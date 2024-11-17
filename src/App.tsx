@@ -9,11 +9,12 @@ export default function App() {
 
   const {supabase, session} = useSupabase()
   
+  
 
 
   return (
     <>
-      {session ? <CoreApp/> : <LandingPage/>}
+      { session ? <CoreApp/> : <LandingPage/>}
     </>
     
   )

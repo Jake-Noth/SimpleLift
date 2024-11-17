@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSupabase } from "../SupaBaseContext";
 
 interface CreateSplitProps {
     setSplitDays: React.Dispatch<React.SetStateAction<string[]>>; // State setter for an array of strings
@@ -7,6 +8,7 @@ interface CreateSplitProps {
 export default function CreateSplit({setSplitDays}: CreateSplitProps){
     
     const [days, setDays] = useState([''])
+    const { supabase, session } = useSupabase()
     
     const addDay = () => {
         let newDays = [...days];
@@ -25,6 +27,35 @@ export default function CreateSplit({setSplitDays}: CreateSplitProps){
         }
 
         setSplitDays(filteredDays)
+
+        const setDays = async (filteredDays: string[]) => {
+        
+            const userId = session?.user?.id;
+
+            if (!userId) {
+                console.error("User ID is missing or session is not available");
+                return;
+            }
+
+            const daysData = filteredDays.map((day, index) => ({
+                act_ID: userId,
+                order: index,
+                day: day,
+            }));
+
+            const { data, error } = await supabase
+                .from('Days')
+                .insert(daysData);
+
+            if (error) {
+                console.error('Error inserting days:', error);
+                return;
+            }
+
+            console.log('Days inserted successfully:', data);
+        };
+
+        setDays(filteredDays)
     }
 
     const removeDay = (index: number) => {
