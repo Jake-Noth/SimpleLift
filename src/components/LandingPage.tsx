@@ -15,7 +15,7 @@ export default function Home({ setSignIn }: HomeProps) {
                 </button>
             </section>
             
-            <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', backgroundColor: '#f9f9f9', color: '#333' }}>
+            <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', color: '#333' }}>
             <header style={{ textAlign: 'center', marginBottom: '40px' }}>
             <h1>SimplyExercise: The Easiest Way to Track Your Exercises</h1>
             <p style={{ fontSize: '1.2rem', color: '#555' }}>No Frills. No Distractions. Just Progress.</p>

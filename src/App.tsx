@@ -2,17 +2,18 @@ import { useState } from "react";
 import CoreApp from "./components/CoreApp";
 import LandingPage from "./components/LandingOrSignIn";
 import './styles.css'
+import { useSupabase } from "./SupaBaseContext";
 
 export default function App() {
 
 
-  const [session, setSession] = useState(null)
+  const {supabase, session} = useSupabase()
   
 
 
   return (
     <>
-      {session ? <CoreApp setSession ={setSession} /> : <LandingPage setSession ={setSession} />}
+      {session ? <CoreApp/> : <LandingPage/>}
     </>
     
   )
