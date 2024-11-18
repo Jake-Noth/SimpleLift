@@ -2,15 +2,15 @@
 
 
 type HomeProps = {
-    setSignIn: (value: boolean) => void;
+    onSignIn: () => void
 };
 
-export default function Home({ setSignIn }: HomeProps) {
+export default function LandingPage({ onSignIn }: HomeProps) {
     return (
         <>
             <section className="header">
                 <img src="public/logo.png" id="logo"/>
-                <button onClick={() => setSignIn(true)} id="signInButton">
+                <button onClick={onSignIn} id="signInButton">
                     Sign In
                 </button>
             </section>

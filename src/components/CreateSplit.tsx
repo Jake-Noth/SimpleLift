@@ -2,61 +2,56 @@ import { useState } from "react";
 import { useSupabase } from "../SupaBaseContext";
 
 interface CreateSplitProps {
-    setSplitDays: React.Dispatch<React.SetStateAction<string[]>>; // State setter for an array of strings
-  }
+    setSplitDays: React.Dispatch<React.SetStateAction<string[]>>;
+}
 
-export default function CreateSplit({setSplitDays}: CreateSplitProps){
-    
-    const [days, setDays] = useState([''])
-    const { supabase, session } = useSupabase()
-    
+export default function CreateSplit({ setSplitDays }: CreateSplitProps) {
+    const [days, setDays] = useState(['']);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const { supabase, session } = useSupabase();
+
     const addDay = () => {
         let newDays = [...days];
         newDays.push('');
         setDays(newDays);
     };
 
-    const setSplit = (days: string[]) => {
+    const setSplit = async (days: string[]) => {
+        setLoading(true);
+        setError(false);
 
-        let filteredDays = []
+        let filteredDays = days.filter(day => day !== '');
+        
 
-        for (const day of days){
-            if(day!= ''){
-                filteredDays.push(day)
-            }
+        const userId = session?.user?.id;
+
+        if (!userId) {
+            console.error("User ID is missing or session is not available");
+            setLoading(false);
+            setError(true);
+            return;
         }
 
-        setSplitDays(filteredDays)
+        const daysData = filteredDays.map((day, index) => ({
+            act_ID: userId,
+            order: index,
+            day: day,
+        }));
 
-        const setDays = async (filteredDays: string[]) => {
-        
-            const userId = session?.user?.id;
+        const { data, error } = await supabase.from('Days').insert(daysData);
 
-            if (!userId) {
-                console.error("User ID is missing or session is not available");
-                return;
-            }
+        if (error) {
+            console.error('Error inserting days:', error);
+            setError(true);
+            setLoading(false);
+            return;
+        }
 
-            const daysData = filteredDays.map((day, index) => ({
-                act_ID: userId,
-                order: index,
-                day: day,
-            }));
-
-            const { data, error } = await supabase
-                .from('Days')
-                .insert(daysData);
-
-            if (error) {
-                console.error('Error inserting days:', error);
-                return;
-            }
-
-            console.log('Days inserted successfully:', data);
-        };
-
-        setDays(filteredDays)
-    }
+        console.log('Days inserted successfully:', data);
+        setSplitDays(filteredDays);
+        setLoading(false);
+    };
 
     const removeDay = (index: number) => {
         const newItems = [...days.slice(0, index), ...days.slice(index + 1)];
@@ -71,37 +66,35 @@ export default function CreateSplit({setSplitDays}: CreateSplitProps){
 
             <h1>Create your workout split</h1>
 
-            <div id='daysContainer'>
-
-                {days.map((element, index) => {
-                    return (
-                        <div key={index} id="dayDiv">
-                            <input
-                                type="text"
-                                value={element}
-                                placeholder={element || "Enter day"}
-                                onChange={(e) => {
-                                    let newDays = [...days];
-                                    newDays[index] = e.target.value;
-                                    setDays(newDays);
-                                }}
-                            />
-                            <button id='deleteButton' onClick={() => { removeDay(index) }}/>
-                        </div>
-                    );
-                })}
-
-                <button onClick={addDay} id='addButton'></button>
-
+            <div id="daysContainer">
+                {days.map((element, index) => (
+                    <div key={index} id="dayDiv">
+                        <input
+                            type="text"
+                            value={element}
+                            placeholder={element || "Enter day"}
+                            onChange={(e) => {
+                                let newDays = [...days];
+                                newDays[index] = e.target.value;
+                                setDays(newDays);
+                            }}
+                        />
+                        <button id="deleteButton" onClick={() => removeDay(index)} />
+                    </div>
+                ))}
+                <button onClick={addDay} id="addButton"></button>
             </div>
 
-            
             <div id="continueContainer">
-                <button onClick ={()=>{
-                    setSplit(days)
-                }} id='continueButton'>Continue</button>
+                {error && <p className="error">Failed to save. Please try again.</p>}
+                <button
+                    onClick={() => setSplit(days)}
+                    id="continueButton"
+                    disabled={loading}
+                >
+                    {loading ? 'Saving...' : error ? 'Retry' : 'Continue'}
+                </button>
             </div>
-            
         </>
     );
 }
