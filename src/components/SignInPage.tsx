@@ -1,6 +1,6 @@
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { useSupabase } from '../SupaBaseContext'
+import { useSupabase } from '../CustomHooks/useSupaBaseContext'
 
 
 export default function SignInPage() {

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useSupabase } from "../SupaBaseContext";
+import { useSupabase } from "./useSupaBaseContext";
 
 export function useFetchSplit() {
-  const [days, setDays] = useState<string[]>(['']);
+  const [days, setDays] = useState<string[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { supabase, session } = useSupabase();
@@ -28,8 +28,6 @@ export function useFetchSplit() {
       if (data?.length) {
         const sortedData = data.sort((a, b) => a.order - b.order);
         setDays(sortedData.map((item) => item.day));
-      } else {
-        setDays(['']);
       }
 
       setError(null);

@@ -7,7 +7,7 @@ interface cardProps{
 }
 
 
-export default function Card({days}:cardProps){
+export default function CoreApp({days}:cardProps){
 
     const [day, setDay] = useState(days[0])
     const [settingsPage, setSettingsPage] = useState(false)

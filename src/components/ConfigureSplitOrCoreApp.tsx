@@ -1,6 +1,6 @@
 import CreateSplit from "./CreateSplit";
-import Card from "./Card";
-import { useFetchSplit } from "../FetchSupaBase/useFetchSplit";
+import { useFetchSplit } from "../CustomHooks/useFetchSplit";
+import CoreApp from "./CoreApp";
 
 
 export default function ConfigureSplitOrCoreApp() {
@@ -21,8 +21,8 @@ export default function ConfigureSplitOrCoreApp() {
 
   return (
     <>
-      {days[0] !== '' ? (
-        <Card days={days} />
+      {days ? (
+        <CoreApp days={days} />
       ) : (
         <CreateSplit setSplitDays={setDays} />
       )}
