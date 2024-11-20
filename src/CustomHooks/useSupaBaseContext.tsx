@@ -9,12 +9,18 @@ const supabase = createClient(S_URL, S_ANON);
 interface SupabaseContextProps {
   supabase: SupabaseClient;
   session: Session | null;
+  deleteSession: () => void
 }
 
 const SupabaseContext = createContext<SupabaseContextProps | null>(null);
 
+
+
 export const SupabaseProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  
   const [session, setSession] = useState<Session | null>(null);
+
+  const deleteSession = () => setSession(null)
 
   useEffect(() => {
     
@@ -34,7 +40,7 @@ export const SupabaseProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, []);
 
   return (
-    <SupabaseContext.Provider value={{ supabase, session }}>
+    <SupabaseContext.Provider value={{ supabase, session, deleteSession }}>
       {children}
     </SupabaseContext.Provider>
   );

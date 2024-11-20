@@ -19,7 +19,7 @@ export function useFetchSplit() {
       const { data, error } = await supabase
         .from("Days")
         .select("day, order")
-        .eq("act_ID", id);
+        .eq("user_id", id);
 
       if (error) {
         throw new Error("Failed to fetch data.");

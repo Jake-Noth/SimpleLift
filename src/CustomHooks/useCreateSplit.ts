@@ -32,7 +32,7 @@ export function useCreateSplit(setSplitDays:React.Dispatch<React.SetStateAction<
         }
 
         const daysData = filteredDays.map((day, index) => ({
-            act_ID: userId,
+            user_id: userId,
             order: index,
             day: day,
         }));

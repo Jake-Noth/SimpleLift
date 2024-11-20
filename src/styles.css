@@ -56,7 +56,7 @@
   }
 
   #deleteButton {
-    background-image: url('public/redMinus.png');
+    background-image: url('public/plus-icon.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -79,13 +79,11 @@
   }
 
 .cogButton {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border: none;
-    margin-left: 70vw;
-    margin-top: 2vh;
     background-color: transparent;
-    background-image: url('public/settingsCog.png'); /* Add your SVG cog image */
+    background-image: url('public/settings-cog.png'); /* Add your SVG cog image */
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -108,3 +106,125 @@
     cursor: pointer; /* Pointer cursor on hover */
     transition: background-color 0.3s ease; /* Smooth hover effect */
   }
+
+  #header-container {
+    display: flex;
+    flex-direction: row;
+    height: 10vh;
+    width: 100%;
+  }
+
+  #day-label-container {
+    display: flex;
+    font-size: 30px;
+    align-items: end;
+    justify-content: baseline;
+    height: 100%;
+    width: 80%;
+    padding-left: 5%;
+  
+  }
+
+  #day-label {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-family:Helvetica;
+  }
+
+  #settings-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 5%;
+    height: 100%;
+    width: 20%;
+  }
+
+  #my-exercises-container {
+    height: 80vh;
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+  }
+
+  #add-exercises-container {
+    height: 80vh;
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+  }
+
+  #bottom-bar-container {
+    height: 10vh;
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+  }
+
+  #left-button-container {
+    display: flex;
+    width: 30vw;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #left-arrow-button {
+    border: none;
+    background-image: url('public/nav-arrow.png');
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 60px;
+    width: 60px;
+  }
+
+  #add-button-container {
+    display: flex;
+    width: 40vw;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #add-button {
+    border: none;
+    background-image: url('public/plus-icon.png');
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 45px;
+    width: 45px;
+  }
+
+  #down-arrow-button {
+    border: none;
+    background-image: url('public/nav-arrow.png');
+    transform: rotate(270deg);
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 60px;
+    width: 60px;
+  }
+
+  #right-button-container {
+    display: flex;
+    width: 30vw;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #right-arrow-button {
+    border: none;
+    background-image: url('public/nav-arrow.png');
+    transform: scaleX(-1);
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 60px;
+    width: 60px;
+  }
+
+

@@ -1,10 +1,16 @@
+import { useSupabase } from "../CustomHooks/useSupaBaseContext"
 
-
-interface pageSetter{
-    setSettingsPage: React.Dispatch<React.SetStateAction<boolean>>
+interface pageSwitcher{
+    showCoreApp: () => void
 }
 
-export default function SettingsPage({setSettingsPage}: pageSetter){
 
-    return(<></>)
+export default function SettingsPage({showCoreApp}:pageSwitcher){
+
+    const {deleteSession} = useSupabase()
+
+    return(<>
+    <button onClick={showCoreApp}>Back</button>
+    <button onClick={deleteSession}>Logout</button>
+    </>)
 }

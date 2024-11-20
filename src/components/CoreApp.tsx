@@ -1,53 +1,22 @@
 import React, { useState } from "react"
 import SettingsPage from "./SettingsPage"
+import Cards from "./Cards"
 
 
 interface cardProps{
     days: string[]
 }
 
-
 export default function CoreApp({days}:cardProps){
 
-    const [day, setDay] = useState(days[0])
-    const [settingsPage, setSettingsPage] = useState(false)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    const [displayCoreApp, setDisplayCoreApp] = useState(true)
 
     return(
         <>
-
-            {settingsPage ? <SettingsPage setSettingsPage = {setSettingsPage} /> 
+            {displayCoreApp ? <Cards split = {days} showSettings = {() => setDisplayCoreApp(false)}/>
             :
-                <>
-                    <section className="header">
-                    <h1>{day}</h1>
-                    <button className="cogButton" onClick={()=>{setSettingsPage(true)}}></button>
-                    </section>
-
-                    <section className="cardBody">
-
-                    </section>
-
-                    <section className="buttonSection">
-
-                    </section>
-                </>
-            }
-            
+            <SettingsPage showCoreApp = {() => setDisplayCoreApp(true)}/> }
         </>
+      
     )
 }
