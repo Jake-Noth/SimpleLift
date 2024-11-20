@@ -37,7 +37,7 @@ export function useCreateSplit(setSplitDays:React.Dispatch<React.SetStateAction<
             day: day,
         }));
 
-        const { data, error } = await supabase.from('Days').insert(daysData);
+        const { data, error } = await supabase.from('Day').insert(daysData);
 
         if (error) {
             console.error('Error inserting days:', error);

@@ -17,7 +17,7 @@ export function useFetchSplit() {
       }
 
       const { data, error } = await supabase
-        .from("Days")
+        .from("Day")
         .select("day, order")
         .eq("user_id", id);
 

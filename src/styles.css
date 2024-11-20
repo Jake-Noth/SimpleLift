@@ -148,10 +148,18 @@
   }
 
   #add-exercises-container {
+    display: flex;
+    flex-direction: column;
     height: 80vh;
     width: 100%;
     border-bottom: 1px solid lightgray;
     border-top: 1px solid lightgray;
+    overflow-y: scroll;
+  }
+
+  #add-exercise-exercise-container {
+    height: auto;
+    min-height: 50px;
   }
 
   #bottom-bar-container {
