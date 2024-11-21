@@ -8,11 +8,11 @@ export function useViewportHeight() {
   };
 
   useEffect(() => {
-    updateViewportHeight(); // Initialize the viewport height on load
-    window.addEventListener("resize", updateViewportHeight); // Update on resize
+    updateViewportHeight();
+    window.addEventListener("resize", updateViewportHeight);
 
     return () => {
-      window.removeEventListener("resize", updateViewportHeight); // Cleanup on unmount
+      window.removeEventListener("resize", updateViewportHeight);
     };
   }, []);
 

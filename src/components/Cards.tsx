@@ -14,9 +14,6 @@ export default function cards(props:cardProps){
 
     const {day, showSettings, showAddLiftScreen, setShowAddLiftScreen, previousDay, nextDay, allExercises} = useGenerateCardProps(props);
 
-
-
-    console.log(allExercises)
     return(
         <>
             <Header day = {day} showSettings={showSettings}/>
