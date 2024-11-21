@@ -13,6 +13,7 @@ export function useCreateSplit(setSplitDays:React.Dispatch<React.SetStateAction<
         let newDays = [...days];
         newDays.push('');
         setDays(newDays);
+        console.log('added day')
     };
 
     const setSplit = async (days: string[]) => {
