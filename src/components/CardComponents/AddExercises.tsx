@@ -1,15 +1,19 @@
 import { useEffect, useState, useRef } from "react";
 import ExerciseOfAddExercise from "./ExerciseOfAddExercise";
+import { useSupabase } from "../../CustomHooks/useSupaBaseContext";
 
 interface AddExercisesProps {
     allExercises: string[] | null;
+    UUID: string;
+    hideLiftScreen: () => void;
 }
 
-export default function AddExercises({ allExercises }: AddExercisesProps) {
+export default function AddExercises({ allExercises, UUID, hideLiftScreen }: AddExercisesProps) {
     const [iterations, setIterations] = useState(0);
     const [exerciseToBeRendered, setExercisesToBeRendered] = useState<string[]>([]);
     const loaderRef = useRef<HTMLDivElement | null>(null);
     const [exercisesToBeAdded, setExercisesToBeAdded] = useState<string[]>([]);
+    const {supabase, session} = useSupabase()
 
     const generateExercises = () => {
         if (!allExercises) return;
@@ -33,6 +37,27 @@ export default function AddExercises({ allExercises }: AddExercisesProps) {
         setExercisesToBeAdded(newArray);
         }
     };
+
+    const addExercisesToDay = async () =>{
+
+        const id = session?.user.id
+
+        const exercisesData = exercisesToBeAdded.map(exercise => ({
+            exercise_title: exercise,
+            day_reference: UUID,
+            user_id: id
+        }));
+
+        const { data, error } = await supabase.from("MyExercise").insert(exercisesData);
+
+        if (error) {
+            console.error("Error inserting exercises:", error.message);
+        } else {
+            console.log("Successfully added exercises:", data);
+            setExercisesToBeAdded([]);
+            hideLiftScreen()
+        }
+    }
 
     useEffect(() => {
         if (allExercises && allExercises.length > 0) {
@@ -75,7 +100,7 @@ export default function AddExercises({ allExercises }: AddExercisesProps) {
                 )}
             </div>
             <div style={{display:"flex", justifyContent:"end", paddingTop:"5px", paddingRight:"5px", paddingBottom:"5px"}}>
-                <button disabled={exercisesToBeAdded.length == 0}>Add Exercises</button>
+                <button disabled={exercisesToBeAdded.length == 0} onClick={addExercisesToDay}>Add Exercises</button>
             </div>
         </>
         

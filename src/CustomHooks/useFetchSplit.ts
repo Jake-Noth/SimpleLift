@@ -5,6 +5,7 @@ export function useFetchSplit() {
   const [days, setDays] = useState<string[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [dayUUID, setDayUUID] = useState<string[] | null>(null)
   const { supabase, session } = useSupabase();
 
   const fetchData = async () => {
@@ -18,7 +19,7 @@ export function useFetchSplit() {
 
       const { data, error } = await supabase
         .from("Day")
-        .select("day, order")
+        .select("day, order, row_id")
         .eq("user_id", id);
 
       if (error) {
@@ -28,6 +29,7 @@ export function useFetchSplit() {
       if (data?.length) {
         const sortedData = data.sort((a, b) => a.order - b.order);
         setDays(sortedData.map((item) => item.day));
+        setDayUUID(sortedData.map((item) => item.row_id));
       }
 
       setError(null);
@@ -43,5 +45,5 @@ export function useFetchSplit() {
     fetchData();
   }, []);
 
-  return { days, loading, error, setDays, retryFetch: fetchData};
+  return { days, loading, error ,dayUUID, retryFetch: fetchData};
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSupabase } from "./useSupaBaseContext";
 
 
-export function useCreateSplit(setSplitDays:React.Dispatch<React.SetStateAction<string[] | null>>){
+export function useCreateSplit(retryFetch:()=> void){
 
     const [days, setDays] = useState(['']);
     const [loading, setLoading] = useState(false);
@@ -48,7 +48,7 @@ export function useCreateSplit(setSplitDays:React.Dispatch<React.SetStateAction<
         }
 
         console.log('Days inserted successfully:', data);
-        setSplitDays(filteredDays);
+        retryFetch()
         setLoading(false);
     };
 

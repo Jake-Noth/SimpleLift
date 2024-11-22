@@ -1,12 +1,12 @@
 import { useCreateSplit } from "../CustomHooks/useCreateSplit";
 
-interface SetSplitState {
-    setSplitDays: React.Dispatch<React.SetStateAction<string[] | null>>;
+interface SetSplitProps {
+    retryFetch: () => void
 }
 
-export default function CreateSplit({ setSplitDays }: SetSplitState) {
+export default function CreateSplit({ retryFetch }: SetSplitProps) {
     
-   const {loading, error, addDay, setSplit, removeDay, days, setDays} = useCreateSplit(setSplitDays)
+   const {loading, error, addDay, setSplit, removeDay, days, setDays} = useCreateSplit(retryFetch)
 
     return (
         <>

@@ -1,19 +1,20 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import SettingsPage from "./SettingsPage"
 import Cards from "./Cards"
 
 
 interface cardProps{
     days: string[]
+    daysUUIDs: string[]
 }
 
-export default function CoreApp({days}:cardProps){
+export default function CoreApp(appProps:cardProps){
 
     const [displayCoreApp, setDisplayCoreApp] = useState(true)
 
     return(
         <>
-            {displayCoreApp ? <Cards split = {days} showSettings = {() => setDisplayCoreApp(false)}/>
+            {displayCoreApp ? <Cards days = {appProps.days} daysUUIDs={appProps.daysUUIDs} showSettings = {() => setDisplayCoreApp(false)}/>
             :
             <SettingsPage showCoreApp = {() => setDisplayCoreApp(true)}/> }
         </>

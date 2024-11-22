@@ -4,7 +4,7 @@ import CoreApp from "./CoreApp";
 
 
 export default function ConfigureSplitOrCoreApp() {
-  const { days, loading, error, setDays, retryFetch } = useFetchSplit()
+  const { days, loading, dayUUID, error, retryFetch } = useFetchSplit()
 
   if (loading) {
     return <div>Loading...</div>;
@@ -21,10 +21,10 @@ export default function ConfigureSplitOrCoreApp() {
 
   return (
     <>
-      {days ? (
-        <CoreApp days={days} />
+      {days && dayUUID ? (
+        <CoreApp days={days} daysUUIDs = {dayUUID} />
       ) : (
-        <CreateSplit setSplitDays={setDays} />
+        <CreateSplit retryFetch = {retryFetch} />
       )}
     </>
   );

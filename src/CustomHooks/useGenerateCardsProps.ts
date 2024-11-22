@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react"
 import { useSupabase } from "./useSupaBaseContext"
 
+export function useGenerateCardProps(days:string[], dayUUIDs:string[]){
 
-interface cardProps{
-    showSettings: () => void
-    split: string[]
-}
-
-export function useGenerateCardProps({showSettings, split}:cardProps){
-
-    const [day, setDay] = useState(split[0])
+    const [day, setDay] = useState<string>(days[0])
+    const [dayUUID, setDayUUID] = useState<string>(dayUUIDs[0])
     const [showAddLiftScreen, setShowAddLiftScreen] = useState(false)
     const [allExercises, setAllExercises] = useState<null | string[]>(null)
 
@@ -33,21 +28,23 @@ export function useGenerateCardProps({showSettings, split}:cardProps){
     },[])
     
     const previousDay = () => {
-        let cur = split.indexOf(day);
-        cur = cur - 1 < 0 ? split.length - 1 : cur - 1;
-        setDay(split[cur]);
+        let cur = days.indexOf(day);
+        cur = cur - 1 < 0 ? days.length - 1 : cur - 1;
+        setDay(days[cur]);
+        setDayUUID(dayUUIDs[cur])
         setShowAddLiftScreen(false);
     };
     
     const nextDay = () => {
-        let cur = split.indexOf(day);
-        cur = (cur + 1) % split.length;
-        setDay(split[cur]);
+        let cur = days.indexOf(day);
+        cur = (cur + 1) % days.length;
+        setDay(days[cur]);
+        setDayUUID(dayUUIDs[cur])
         setShowAddLiftScreen(false);
     };
 
 
-    return {day, showSettings, showAddLiftScreen, setShowAddLiftScreen, previousDay, nextDay, allExercises}
+    return {day, dayUUID, showAddLiftScreen, setShowAddLiftScreen, previousDay, nextDay, allExercises}
 }
 
 
