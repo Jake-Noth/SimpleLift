@@ -6,9 +6,11 @@ interface AddExercisesProps {
     allExercises: string[] | null;
     UUID: string;
     hideLiftScreen: () => void;
+    fetchExerciseForDay: (UUID:string) => Promise<void>
+    exerciseDict: object
 }
 
-export default function AddExercises({ allExercises, UUID, hideLiftScreen }: AddExercisesProps) {
+export default function AddExercises({ allExercises, UUID, hideLiftScreen, fetchExerciseForDay }: AddExercisesProps) {
     const [iterations, setIterations] = useState(0);
     const [exerciseToBeRendered, setExercisesToBeRendered] = useState<string[]>([]);
     const loaderRef = useRef<HTMLDivElement | null>(null);
@@ -54,6 +56,7 @@ export default function AddExercises({ allExercises, UUID, hideLiftScreen }: Add
             console.error("Error inserting exercises:", error.message);
         } else {
             console.log("Successfully added exercises:", data);
+            fetchExerciseForDay(UUID)
             setExercisesToBeAdded([]);
             hideLiftScreen()
         }
@@ -63,7 +66,7 @@ export default function AddExercises({ allExercises, UUID, hideLiftScreen }: Add
         if (allExercises && allExercises.length > 0) {
             generateExercises();
         }
-    }, [allExercises]);
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -79,7 +82,7 @@ export default function AddExercises({ allExercises, UUID, hideLiftScreen }: Add
         return () => {
             if (loaderRef.current) observer.unobserve(loaderRef.current);
         };
-    }, [iterations, allExercises]);
+    }, [iterations]);
 
     return (
 
