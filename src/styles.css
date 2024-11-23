@@ -139,14 +139,7 @@
     width: 20%;
   }
 
-  #my-exercises-container {
-    height: 80vh;
-    width: 100%;
-    border-bottom: 1px solid lightgray;
-    border-top: 1px solid black;
-  }
-
-  #add-exercises-container {
+  .exercises-container {
     display: flex;
     flex-direction: column;
     height: 80vh;

@@ -1,0 +1,49 @@
+const updateExerciseHistory = async (exercisesData: any[]) => {
+        try {
+            const userId = session?.user.id;
+            if (!userId || !exercisesData || exercisesData.length === 0) {
+                console.warn("No user ID or exercises data provided.");
+                return;
+            }
+    
+            // Prepare data to match the schema of MyExerciseHistory (user_id and exercise_title)
+            const formattedExercises = exercisesData.map((exercise) => ({
+                user_id: userId,
+                exercise_title: exercise.exercise_title,
+            }));
+    
+            // Filter out exercises already present in the exercise history
+            const newExercises = formattedExercises.filter(
+                (exercise) =>
+                    !myExerciseHistory?.data.some(
+                        (history) => history.exercise_title === exercise.exercise_title
+                    )
+            );
+    
+            if (newExercises.length === 0) {
+                console.log("No new exercises to add to history.");
+                return;
+            }
+    
+            // Insert new exercises into the MyExerciseHistory table
+            const { data, error } = await supabase
+                .from("MyExerciseHistory")
+                .insert(newExercises);
+    
+            if (error) {
+                console.error("Error inserting into MyExerciseHistory:", error.message);
+            } else {
+                console.log("Successfully updated exercise history:", data);
+            }
+        } catch (error) {
+            console.error("Error in updateExerciseHistory:", error);
+        }
+    };
+
+
+
+    interface ExerciseHistory{
+        data: { exercise_title: string }[];
+    }
+
+    myExerciseHistory: ExerciseHistory | null

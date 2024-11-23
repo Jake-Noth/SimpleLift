@@ -1,11 +1,17 @@
 import useAddExerciseHelper from "./useAddExerciseHelper";
 import ExerciseOfAddExercise from "./ExerciseOfAddExercise";
 
+interface ExerciseHistory{
+    data: { exercise_title: string }[];
+}
+
 interface AddExercisesProps {
     allExercisesInDB: string[];
     UUID: string;
+    myExerciseHistory: ExerciseHistory | null
     hideLiftScreen: () => void;
     fetchExerciseForDay: (UUID: string) => Promise<void>;
+    getMyExerciseHistory: () => void
     exerciseDict: { [key: string]: any };
 }
 
@@ -14,7 +20,9 @@ export default function AddExercises({
     UUID,
     hideLiftScreen,
     fetchExerciseForDay,
+    getMyExerciseHistory,
     exerciseDict,
+    myExerciseHistory,
 }: AddExercisesProps) {
     const {
         exercisesToBeAdded,
@@ -25,14 +33,16 @@ export default function AddExercises({
         allExercisesInDB,
         UUID,
         exerciseDict,
+        myExerciseHistory,
         fetchExerciseForDay,
         hideLiftScreen,
+        getMyExerciseHistory
     });
 
     return (
         <>
             <div>Select Exercises you want to add to this day</div>
-            <div id="add-exercises-container">
+            <div className="exercises-container">
                 {exerciseNotAlreadyBeingUsed.map((exercise, index) => (
                     <div id="add-exercise-exercise-container" key={index}>
                         <ExerciseOfAddExercise exercise={exercise} checkBoxHelper={manageCheckBox} />

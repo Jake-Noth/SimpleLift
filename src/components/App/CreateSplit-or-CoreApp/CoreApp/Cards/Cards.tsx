@@ -17,8 +17,10 @@ export default function cards(props:cardProps){
         day,
         UUID,
         liftScreen,
-        allExercises,
+        allExercisesInDB,
         exerciseDict,
+        myExerciseHistory,
+        getExerciseHistory,
         showAddLiftScreen,
         hideAddLiftScreen,
         previousDay,
@@ -32,15 +34,18 @@ export default function cards(props:cardProps){
             
             {liftScreen ? (
                 <AddExercises
-                    allExercisesInDB={allExercises}
+                    allExercisesInDB={allExercisesInDB}
                     UUID={UUID}
                     exerciseDict={exerciseDict}
+                    myExerciseHistory = {myExerciseHistory}
+                    getMyExerciseHistory = {getExerciseHistory}
                     hideLiftScreen={hideAddLiftScreen}
                     fetchExerciseForDay={fetchExercisesForDay}
                 />
             ) : (
                 <MyExercises
                     exerciseDict={exerciseDict}
+                    UUID = {UUID}
                 />
             )}
 

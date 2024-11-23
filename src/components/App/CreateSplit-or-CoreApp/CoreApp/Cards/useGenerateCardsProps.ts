@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react"
 import { useSupabase } from "../../../../../../useSupaBaseContext"
 
+
+interface ExerciseHistory{
+    data: { exercise_title: string }[];
+}
+
 export function useGenerateCardProps(days:string[], UUIDs:string[]){
 
     const [day, setDay] = useState<string>(days[0])
     const [UUID, setUUIDs] = useState<string>(UUIDs[0])
     const [showAddLiftScreen, setShowAddLiftScreen] = useState(false)
-    const [allExercises, setAllExercises] = useState<string[]>([])
+    const [allExercisesInDB, setAllExercisesInDB] = useState<string[]>([])
     const [exerciseDict, setExerciseDict] = useState({})
+    const [myExerciseHistory, setExerciseHistory] = useState<ExerciseHistory | null>(null);
 
-    const {supabase} = useSupabase()
+    const {supabase, session} = useSupabase()
 
-    const getAllExercises = async () =>{
+    const getAllExercisesInDB = async () =>{
         const {data, error} = await supabase
         .from('Exercise')
         .select('title')
@@ -21,8 +27,22 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
         }
 
         const titles = data?.map((exercise) => exercise.title) || [];
-        setAllExercises(titles);
+        setAllExercisesInDB(titles);
     }
+
+    const getExerciseHistory = async () => {
+        
+        const { error, data } = await supabase
+            .from('MyExerciseHistory')
+            .select('exercise_title')
+            .eq('user_id', session?.user.id);
+    
+        if (error) {
+            console.error('Error getting exercise history:', error);
+        } else if (data) {
+            setExerciseHistory({data});
+        }
+    };
 
     const fetchExercisesForDay = async (UUID: string) => {
     
@@ -31,7 +51,7 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
         };
     
         const { error, data } = await supabase
-            .from("MyExercise")
+            .from("MyCurrentExercise")
             .select("exercise_title")
             .eq("day_reference", UUID) as { data: MyExercise[] | null, error: any };
     
@@ -52,7 +72,8 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
     };
 
     useEffect(()=>{
-        getAllExercises()
+        getAllExercisesInDB()
+        getExerciseHistory()
 
         for(const UUID of UUIDs){
             fetchExercisesForDay(UUID)
@@ -84,8 +105,10 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
         day, 
         UUID,
         liftScreen:showAddLiftScreen,
-        allExercises,
+        allExercisesInDB,
         exerciseDict,
+        myExerciseHistory,
+        getExerciseHistory,
         showAddLiftScreen:showAddLiftScreenHelper, 
         hideAddLiftScreen:hideAddLiftScreenHelper, 
         previousDay, 

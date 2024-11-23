@@ -9,10 +9,16 @@ interface ExerciseDict {
     [key: string]: NestedDict;
 }
 
+interface ExerciseHistory{
+    data: { exercise_title: string }[];
+}
+
 interface UseAddExerciseHelperProps {
     allExercisesInDB: string[];
     UUID: string;
     exerciseDict: ExerciseDict;
+    myExerciseHistory: ExerciseHistory | null
+    getMyExerciseHistory: () => void
     fetchExerciseForDay: (UUID: string) => Promise<void>;
     hideLiftScreen: () => void;
 }
@@ -21,6 +27,8 @@ export default function useAddExerciseHelper({
     allExercisesInDB,
     UUID,
     exerciseDict,
+    myExerciseHistory,
+    getMyExerciseHistory,
     fetchExerciseForDay,
     hideLiftScreen,
 }: UseAddExerciseHelperProps) {
@@ -41,6 +49,45 @@ export default function useAddExerciseHelper({
         }
     };
 
+    const updateExerciseHistory = async (exercisesData: any[]) => {
+        try {
+            const userId = session?.user.id;
+            if (!userId || !exercisesData || exercisesData.length === 0) {
+                console.warn("No user ID or exercises data provided.");
+                return;
+            }
+    
+            const formattedExercises = exercisesData.map((exercise) => ({
+                user_id: userId,
+                exercise_title: exercise.exercise_title,
+            }));
+    
+            const newExercises = formattedExercises.filter(
+                (exercise) =>
+                    !myExerciseHistory?.data.some(
+                        (history) => history.exercise_title === exercise.exercise_title
+                    )
+            );
+    
+            if (newExercises.length === 0) {
+                console.log("No new exercises to add to history.");
+                return;
+            }
+    
+            const { data, error } = await supabase
+                .from("MyExerciseHistory")
+                .insert(newExercises);
+    
+            if (error) {
+                console.error("Error inserting into MyExerciseHistory:", error.message);
+            } else {
+                console.log("Successfully updated exercise history:", data);
+            }
+        } catch (error) {
+            console.error("Error in updateExerciseHistory:", error);
+        }
+    };
+
     const addExercisesToDay = async () => {
         const id = session?.user.id;
 
@@ -50,7 +97,9 @@ export default function useAddExerciseHelper({
             user_id: id,
         }));
 
-        const { data, error } = await supabase.from("MyExercise").insert(exercisesData);
+        updateExerciseHistory(exercisesData)
+
+        const { data, error } = await supabase.from("MyCurrentExercise").insert(exercisesData);
 
         if (error) {
             console.error("Error inserting exercises:", error.message);
@@ -58,6 +107,7 @@ export default function useAddExerciseHelper({
             console.log("Successfully added exercises:", data);
             fetchExerciseForDay(UUID);
             setExercisesToBeAdded([]);
+            getMyExerciseHistory()
             hideLiftScreen();
         }
     };
