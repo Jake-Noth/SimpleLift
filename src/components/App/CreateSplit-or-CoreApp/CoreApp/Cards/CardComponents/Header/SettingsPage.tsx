@@ -1,4 +1,4 @@
-import { useSupabase } from "../CustomHooks/useSupaBaseContext"
+import { useSupabase } from "../../../../../../../../useSupaBaseContext"
 
 interface pageSwitcher{
     showCoreApp: () => void

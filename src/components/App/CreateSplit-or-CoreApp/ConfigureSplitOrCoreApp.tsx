@@ -1,6 +1,6 @@
-import CreateSplit from "./CreateSplit";
-import { useFetchSplit } from "../CustomHooks/useFetchSplit";
-import CoreApp from "./CoreApp";
+import CreateSplit from "./Create-split/CreateSplit";
+import { useFetchSplit } from "./useFetchSplit";
+import CoreApp from "./CoreApp/CoreApp";
 
 
 export default function ConfigureSplitOrCoreApp() {

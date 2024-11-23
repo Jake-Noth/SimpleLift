@@ -1,4 +1,4 @@
-import { useCreateSplit } from "../CustomHooks/useCreateSplit";
+import { useCreateSplit } from "./useCreateSplit";
 
 interface SetSplitProps {
     retryFetch: () => void

@@ -1,6 +1,6 @@
 import { useState } from "react"
-import SettingsPage from "./SettingsPage"
-import Cards from "./Cards"
+import SettingsPage from "./Cards/CardComponents/Header/SettingsPage"
+import Cards from "./Cards/Cards"
 
 
 interface cardProps{

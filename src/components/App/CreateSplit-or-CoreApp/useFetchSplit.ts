@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSupabase } from "./useSupaBaseContext";
+import { useSupabase } from "../../../../useSupaBaseContext";
 
 export function useFetchSplit() {
   const [days, setDays] = useState<string[] | null>(null);

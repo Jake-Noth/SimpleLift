@@ -1,8 +1,8 @@
-import Header from "./CardComponents/Header"
+import Header from "./CardComponents/Header/Header"
 import BottomAppBar from "./CardComponents/BottomAppBar"
-import AddExercises from "./CardComponents/AddExercises"
+import AddExercises from "./CardComponents/Add-Exercises/AddExercises"
 import MyExercises from "./CardComponents/MyExercises"
-import { useGenerateCardProps } from "../CustomHooks/useGenerateCardsProps"
+import { useGenerateCardProps } from "./useGenerateCardsProps"
 
 interface cardProps{
     days: string[]

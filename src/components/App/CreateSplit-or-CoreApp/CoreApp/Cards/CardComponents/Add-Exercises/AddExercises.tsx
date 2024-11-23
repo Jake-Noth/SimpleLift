@@ -1,4 +1,4 @@
-import useAddExerciseHelper from "../../CustomHooks/useAddExerciseHelper";
+import useAddExerciseHelper from "./useAddExerciseHelper";
 import ExerciseOfAddExercise from "./ExerciseOfAddExercise";
 
 interface AddExercisesProps {

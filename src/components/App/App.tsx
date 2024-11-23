@@ -1,8 +1,8 @@
-import ConfigureSplitOrCoreApp from "./components/ConfigureSplitOrCoreApp";
-import LandingOrSignIn from "./components/LandingOrSignIn";
-import './styles.css';
-import { useSupabase } from "./CustomHooks/useSupaBaseContext";
-import { useViewportHeight } from "./CustomHooks/useViewPortHeight";
+import ConfigureSplitOrCoreApp from "./CreateSplit-or-CoreApp/ConfigureSplitOrCoreApp";
+import LandingOrSignIn from "./LandingPage/LandingOrSignIn";
+import '../../styles.css'
+import { useSupabase } from "../../../useSupaBaseContext";
+import { useViewportHeight } from "./useViewPortHeight";
 
 export default function App() {
   const { session } = useSupabase();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useSupabase } from "./useSupaBaseContext"
+import { useSupabase } from "../../../../../../useSupaBaseContext"
 
 export function useGenerateCardProps(days:string[], UUIDs:string[]){
 

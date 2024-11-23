@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSupabase } from "./useSupaBaseContext";
+import { useSupabase } from "../../../../../../../../useSupaBaseContext";
 
 interface NestedDict {
     [key: string]: any;
