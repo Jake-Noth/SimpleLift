@@ -23,7 +23,7 @@ export default function cards(props:cardProps){
         hideAddLiftScreen,
         previousDay,
         nextDay,
-        fetchExercisesForDay
+        fetchExercisesForDay,
     } = useGenerateCardProps(props.days, props.daysUUIDs);
 
     return(
@@ -32,7 +32,7 @@ export default function cards(props:cardProps){
             
             {liftScreen ? (
                 <AddExercises
-                    allExercises={allExercises}
+                    allExercisesInDB={allExercises}
                     UUID={UUID}
                     exerciseDict={exerciseDict}
                     hideLiftScreen={hideAddLiftScreen}
