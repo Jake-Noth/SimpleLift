@@ -44,6 +44,8 @@ export default function cards(props:cardProps){
                 />
             ) : (
                 <MyExercises
+                    fetchExerciseForDay = {fetchExercisesForDay}
+                    day ={day}
                     exerciseDict={exerciseDict}
                     UUID = {UUID}
                 />

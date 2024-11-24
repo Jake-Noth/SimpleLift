@@ -152,6 +152,7 @@
   #add-exercise-exercise-container {
     min-height: 10vh;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid lightgrey;
   }
