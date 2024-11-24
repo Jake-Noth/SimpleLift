@@ -145,7 +145,6 @@
     height: 80vh;
     width: 100%;
     border-bottom: 1px solid lightgray;
-    border-top: 1px solid black;
     overflow-y: scroll;
   }
 
@@ -155,6 +154,7 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid lightgrey;
+    padding-left: 10px;
   }
 
   #bottom-bar-container {

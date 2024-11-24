@@ -9,7 +9,7 @@ interface ExerciseDict {
     [key: string]: NestedDict;
 }
 
-interface ExerciseHistory{
+interface ExerciseHistory {
     data: { exercise_title: string }[];
 }
 
@@ -17,8 +17,8 @@ interface UseAddExerciseHelperProps {
     allExercisesInDB: string[];
     UUID: string;
     exerciseDict: ExerciseDict;
-    myExerciseHistory: ExerciseHistory | null
-    getMyExerciseHistory: () => void
+    myExerciseHistory: ExerciseHistory | null;
+    getMyExerciseHistory: () => void;
     fetchExerciseForDay: (UUID: string) => Promise<void>;
     hideLiftScreen: () => void;
 }
@@ -33,6 +33,7 @@ export default function useAddExerciseHelper({
     hideLiftScreen,
 }: UseAddExerciseHelperProps) {
     const [exercisesToBeAdded, setExercisesToBeAdded] = useState<string[]>([]);
+    const [searchTerm, setSearchTerm] = useState(""); // State for search term
     const { supabase, session } = useSupabase();
 
     const removeDays = () => {
@@ -97,7 +98,7 @@ export default function useAddExerciseHelper({
             user_id: id,
         }));
 
-        updateExerciseHistory(exercisesData)
+        updateExerciseHistory(exercisesData);
 
         const { data, error } = await supabase.from("MyCurrentExercise").insert(exercisesData);
 
@@ -107,16 +108,24 @@ export default function useAddExerciseHelper({
             console.log("Successfully added exercises:", data);
             fetchExerciseForDay(UUID);
             setExercisesToBeAdded([]);
-            getMyExerciseHistory()
+            getMyExerciseHistory();
             hideLiftScreen();
         }
     };
 
     const exerciseNotAlreadyBeingUsed = removeDays();
 
+    // Filter exercises based on search term
+    const filteredExercises = exerciseNotAlreadyBeingUsed.filter((exercise) =>
+        exercise.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return {
         exercisesToBeAdded,
-        exerciseNotAlreadyBeingUsed,
+        exerciseNotAlreadyBeingUsed, // Original array
+        filteredExercises,          // Filtered array
+        searchTerm,                 // Search term
+        setSearchTerm,              // Setter for search term
         manageCheckBox,
         addExercisesToDay,
     };

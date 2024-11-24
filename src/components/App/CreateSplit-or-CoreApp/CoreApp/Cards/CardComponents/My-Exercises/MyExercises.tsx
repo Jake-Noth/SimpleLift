@@ -27,8 +27,12 @@ export default function MyExercises({ exerciseDict, UUID, changeExerciseDict }: 
 
     return (
         <>
-            {showRemoveExercise && <>Note: removing an exercise from your split will not erase its data</>}
-            <div className="exercises-container">
+            {showRemoveExercise && (
+                <div style={{ display: "flex", paddingLeft:"10px" }}>
+                    Note: removing an exercise from your split will not erase its data
+                </div>
+            )} 
+            <div className="exercises-container" style={{borderTop:"1px solid black"}}>
                 {exercisesArray.map((item, index) => (
                     <div id="add-exercise-exercise-container" key={index}>
                         {item}
