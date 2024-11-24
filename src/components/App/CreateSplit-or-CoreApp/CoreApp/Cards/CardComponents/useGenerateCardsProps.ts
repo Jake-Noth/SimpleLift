@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react"
-import { useSupabase } from "../../../../../../useSupaBaseContext"
+import { useSupabase } from "../../../../../../../useSupaBaseContext"
 
 
 interface ExerciseHistory{
     data: { exercise_title: string }[];
+}
+
+interface NestedDict {
+    [key: string]: any;
+}
+
+interface ExerciseDict {
+    [key: string]: NestedDict;
 }
 
 export function useGenerateCardProps(days:string[], UUIDs:string[]){
@@ -12,7 +20,7 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
     const [UUID, setUUIDs] = useState<string>(UUIDs[0])
     const [showAddLiftScreen, setShowAddLiftScreen] = useState(false)
     const [allExercisesInDB, setAllExercisesInDB] = useState<string[]>([])
-    const [exerciseDict, setExerciseDict] = useState({})
+    const [exerciseDict, setExerciseDict] = useState<ExerciseDict>({})
     const [myExerciseHistory, setExerciseHistory] = useState<ExerciseHistory | null>(null);
 
     const {supabase, session} = useSupabase()
@@ -29,6 +37,10 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
         const titles = data?.map((exercise) => exercise.title) || [];
         setAllExercisesInDB(titles);
     }
+
+    const changeExerciseDict = (newDict: ExerciseDict) =>{
+        setExerciseDict(newDict);
+    } 
 
     const getExerciseHistory = async () => {
         
@@ -113,7 +125,8 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
         hideAddLiftScreen:hideAddLiftScreenHelper, 
         previousDay, 
         nextDay, 
-        fetchExercisesForDay
+        fetchExercisesForDay,
+        changeExerciseDict
     }
 
 }

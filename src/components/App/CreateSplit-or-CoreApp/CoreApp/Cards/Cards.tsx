@@ -1,8 +1,8 @@
 import Header from "./CardComponents/Header/Header"
 import BottomAppBar from "./CardComponents/BottomAppBar"
 import AddExercises from "./CardComponents/Add-Exercises/AddExercises"
-import MyExercises from "./CardComponents/MyExercises"
-import { useGenerateCardProps } from "./useGenerateCardsProps"
+import MyExercises from "./CardComponents/My-Exercises/MyExercises"
+import { useGenerateCardProps } from "./CardComponents/useGenerateCardsProps"
 
 interface cardProps{
     days: string[]
@@ -26,6 +26,7 @@ export default function cards(props:cardProps){
         previousDay,
         nextDay,
         fetchExercisesForDay,
+        changeExerciseDict
     } = useGenerateCardProps(props.days, props.daysUUIDs);
 
     return(
@@ -44,10 +45,9 @@ export default function cards(props:cardProps){
                 />
             ) : (
                 <MyExercises
-                    fetchExerciseForDay = {fetchExercisesForDay}
-                    day ={day}
                     exerciseDict={exerciseDict}
                     UUID = {UUID}
+                    changeExerciseDict = {changeExerciseDict}
                 />
             )}
 
