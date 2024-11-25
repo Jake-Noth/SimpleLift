@@ -115,17 +115,17 @@ export default function useAddExerciseHelper({
 
     const exerciseNotAlreadyBeingUsed = removeDays();
 
-    // Filter exercises based on search term
+    
     const filteredExercises = exerciseNotAlreadyBeingUsed.filter((exercise) =>
         exercise.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return {
         exercisesToBeAdded,
-        exerciseNotAlreadyBeingUsed, // Original array
-        filteredExercises,          // Filtered array
-        searchTerm,                 // Search term
-        setSearchTerm,              // Setter for search term
+        exerciseNotAlreadyBeingUsed, 
+        filteredExercises,        
+        searchTerm,                 
+        setSearchTerm,            
         manageCheckBox,
         addExercisesToDay,
     };

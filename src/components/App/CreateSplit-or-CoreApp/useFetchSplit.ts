@@ -41,9 +41,45 @@ export function useFetchSplit() {
     }
   };
 
+
+  const changeSplit = async () => {
+    try {
+      setDays(null);
+  
+      const id = session?.user.id;
+      if (!id) {
+        throw new Error("User ID is missing.");
+      }
+  
+      const { error: exerciseError } = await supabase
+        .from("MyCurrentExercise")
+        .delete()
+        .eq("user_id", id);
+  
+      if (exerciseError) {
+        throw new Error("Error deleting rows from 'MyCurrentExercise': " + exerciseError.message);
+      }
+
+      const { error: dayError } = await supabase
+        .from("Day")
+        .delete()
+        .eq("user_id", id);
+  
+      if (dayError) {
+        throw new Error("Error deleting rows from 'Day': " + dayError.message);
+      }
+
+
+    } catch (err: any) {
+      console.error("Error in changeSplit:", err.message || err);
+    }
+  };
+
+
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  return { days, loading, error ,dayUUID, retryFetch: fetchData};
+  return { days, loading, error ,dayUUID, retryFetch: fetchData, changeSplit};
 }

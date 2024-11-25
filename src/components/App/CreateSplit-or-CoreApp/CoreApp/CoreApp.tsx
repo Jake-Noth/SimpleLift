@@ -6,6 +6,7 @@ import Cards from "./Cards/Cards"
 interface cardProps{
     days: string[]
     daysUUIDs: string[]
+    changeSplit: () => void
 }
 
 export default function CoreApp(appProps:cardProps){
@@ -14,9 +15,9 @@ export default function CoreApp(appProps:cardProps){
 
     return(
         <>
-            {displayCoreApp ? <Cards days = {appProps.days} daysUUIDs={appProps.daysUUIDs} showSettings = {() => setDisplayCoreApp(false)}/>
+            {displayCoreApp ? <Cards days = {appProps.days} daysUUIDs={appProps.daysUUIDs} showSettings = {() => setDisplayCoreApp(false)} />
             :
-            <SettingsPage showCoreApp = {() => setDisplayCoreApp(true)}/> }
+            <SettingsPage showCoreApp = {() => setDisplayCoreApp(true)} changeSplit = {appProps.changeSplit}/> }
         </>
       
     )
