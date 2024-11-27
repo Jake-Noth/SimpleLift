@@ -8,6 +8,7 @@ interface cardProps{
     days: string[]
     daysUUIDs: string[]
     showSettings: () => void
+    showExercise: (exercise: string) => void
 }
 
 
@@ -48,6 +49,7 @@ export default function cards(props:cardProps){
                     exerciseDict={exerciseDict}
                     UUID = {UUID}
                     changeExerciseDict = {changeExerciseDict}
+                    showExercise = {props.showExercise}
                 />
             )}
 

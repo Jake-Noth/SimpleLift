@@ -12,9 +12,10 @@ interface MyExercisesProps {
     exerciseDict: ExerciseDict;
     UUID: string;
     changeExerciseDict: (newDict: ExerciseDict) => void;
+    showExercise: (exercise: string) => void
 }
 
-export default function MyExercises({ exerciseDict, UUID, changeExerciseDict }: MyExercisesProps) {
+export default function MyExercises({ exerciseDict, UUID, changeExerciseDict, showExercise }: MyExercisesProps) {
     const {
         showRemoveExercise,
         exercisesToRemove,
@@ -32,9 +33,9 @@ export default function MyExercises({ exerciseDict, UUID, changeExerciseDict }: 
                     Note: removing an exercise from your split will not erase its data
                 </div>
             )} 
-            <div className="exercises-container" style={{borderTop:"1px solid black"}}>
+            <div className="exercises-container" >
                 {exercisesArray.map((item, index) => (
-                    <div id="add-exercise-exercise-container" key={index}>
+                    <div id="add-exercise-exercise-container" key={index} onClick={() => showExercise(item)}>
                         {item}
                         {showRemoveExercise && (
                             <input

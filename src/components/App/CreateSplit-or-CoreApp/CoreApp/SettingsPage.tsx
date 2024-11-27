@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSupabase } from "../../../../../../../../useSupaBaseContext";
+import { useSupabase } from "../../../../../useSupaBaseContext";
 
 interface PageSwitcher {
   showCoreApp: () => void;

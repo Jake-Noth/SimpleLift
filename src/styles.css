@@ -110,8 +110,9 @@
   #header-container {
     display: flex;
     flex-direction: row;
-    height: 10vh;
+    height: 10%;
     width: 100%;
+    border-bottom: 4px solid black;
   }
 
   #day-label-container {
@@ -126,6 +127,7 @@
   }
 
   #day-label {
+    
     text-transform: capitalize;
     font-weight: bold;
   }
@@ -148,6 +150,14 @@
     overflow-y: scroll;
   }
 
+  .exercise-graph-container {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    width: 100%;
+    border-bottom: 1px solid lightgray;
+  }
+
   #add-exercise-exercise-container {
     min-height: 10vh;
     display: flex;
@@ -158,7 +168,7 @@
   }
 
   #bottom-bar-container {
-    height: 10vh;
+    height: 10%;
     width: 100%;
     display:flex;
     flex-direction: row;
@@ -229,4 +239,53 @@
     width: 60px;
   }
 
+  #graph-container {
+    margin-top: 30px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 30px;
+    border: 2px solid black;
+    height: 50%
+  }
+
+  #sessions-container {
+    border: 2px solid black;
+    border-bottom: none;
+    height: 50%;
+    margin-right: 40px;
+    margin-left: 40px;
+  }
+
+  #previous-sessions-container {
+    height: 75%;
+    border-bottom: 2px solid black;
+  }
+
+  #new-session-container {
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+  }
+
+
+  #add-set-button {
+    background-image: url('public/plus-icon.png');
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    border: none;
+  }
+
+  #remove-set-button{
+    border: none;
+    background-image: url('public/minus-sign.png');
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    
+  }
 
