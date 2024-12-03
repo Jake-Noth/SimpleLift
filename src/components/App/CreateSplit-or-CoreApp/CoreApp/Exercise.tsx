@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { useSupabase } from "../../../../../useSupaBaseContext";
 
 interface ExerciseProps {
     exercise: string
@@ -12,6 +13,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
     const [setWeights, setSetWeights] = useState<{ [key: number]: number }>({});
     const [missingFromReps, setMissingFromReps] = useState<{ [key: number]: null }>({});
     const [missingFromWeight, setMissingFromWeight] = useState<{ [key: number]: null }>({});
+
+    const {supabase, session} = useSupabase()
 
     const addSet = () => {
         setSets((prevSets) => [...prevSets, prevSets.length + 1]);
@@ -91,6 +94,47 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
             setMissingFromWeight(newMissingWeight)
     }
 
+    const uploadDataToSupaBase = async () => {
+
+        const { error, data } = await supabase
+        .from('Exercise_session')
+        .insert([
+          {
+            exercise: exercise,
+            date_created: new Date
+          }
+        ])
+        .select('session_id')
+        .single();
+
+      if (error) {
+        console.error('Error inserting data:', error.message);
+        return;
+      }
+
+      for(let i =0; i< Object.keys(setReps).length;i++){
+        
+            const { error} = await supabase
+            .from('sets')
+            .insert([
+                {
+                    session_id: data.session_id,
+                    set: i+1,
+                    weight: setWeights[i],
+                    reps: setReps[i]
+                }
+            ])
+
+            if (error) {
+                console.error('Error inserting set:', error.message);
+                return;
+            }
+
+            console.log('inserted set')
+
+      }
+    }
+
    const submit = () => {
 
         if((Object.keys(setReps).length < 1 && Object.keys(setWeights).length < 1) || (Object.keys(setReps).length != Object.keys(setWeights).length)){
@@ -105,14 +149,15 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                 !(i in setWeights) ? newMissingFromWeight[i] = null : null
             }
 
-            console.log(newMissingFromReps)
-            console.log(newMissingFromWeight)
-
             setMissingFromReps(newMissingFromReps)
             setMissingFromWeight(newMissingFromWeight)
 
         }else{
-            console.log("good to go")
+            
+
+            uploadDataToSupaBase()
+
+
         }
    }
 
