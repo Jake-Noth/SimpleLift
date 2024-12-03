@@ -2,32 +2,119 @@ import { useState } from "react"
 
 interface ExerciseProps {
     exercise: string
+    showCards: () => void
 }
 
-interface RepXWeight {
-    reps: number;
-    weight: number;
-}
+export default function Exercise({exercise, showCards}:ExerciseProps){
 
+    const [sets, setSets] = useState<number[]>([1]);
+    const [setReps, setSetReps] = useState<{ [key: number]: number }>({});
+    const [setWeights, setSetWeights] = useState<{ [key: number]: number }>({});
+    const [missingFromReps, setMissingFromReps] = useState<{ [key: number]: null }>({});
+    const [missingFromWeight, setMissingFromWeight] = useState<{ [key: number]: null }>({});
 
+    const addSet = () => {
+        setSets((prevSets) => [...prevSets, prevSets.length + 1]);
+    };
 
-export default function Exercise({exercise}:ExerciseProps){
+    const removeSet = () => {
 
-    const [sets, setSets] = useState<RepXWeight[]>([{} as RepXWeight]);
+        if(sets.length > 1){
+            const new_reps = { ...setReps };
+            const new_weights = { ...setWeights };
+        
+            const index = sets.length - 1;
+        
+            delete new_reps[index];
+            delete new_weights[index];
 
-    const divWidth = 100/sets.length;
+            updateMissingReps(index)
+            updateMissingWeight(index)
+        
+            setSetReps(new_reps);
+            setSetWeights(new_weights);
+        
+            setSets((prevSets) => prevSets.slice(0, -1));
+        }
+        
+    };
 
+    const updateSetReps = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        index: number
+    ) => {
 
-    const addSet = () =>{
-        const newSet = {} as RepXWeight
-        setSets(old => [...old, newSet])
+        if(event.target.value){
+            const newReps = { ...setReps };
+            newReps[index] = parseInt(event.target.value, 10)
+            setSetReps(newReps);
+
+            updateMissingReps(index)
+        }
+        else{
+            const newReps = { ...setReps};
+            delete newReps[index]
+            setSetReps(newReps)
+        }
+
+    };
+
+    const updateSetWeights = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        index: number
+    ) => {
+        if(event.target.value){
+            const newWeights = { ...setWeights };
+            newWeights[index] = parseInt(event.target.value, 10)
+            setSetWeights(newWeights);
+
+            updateMissingWeight(index)
+
+        }else{
+            const newWeights = { ...setWeights };
+            delete newWeights[index]
+            setSetWeights(newWeights);
+        }
+        
+        
+    };
+    const updateMissingReps = (index:number) =>{
+        const newMissingReps = {...missingFromReps}
+            index in newMissingReps ? delete newMissingReps[index] : null
+            setMissingFromReps(newMissingReps)
     }
 
-    const removeSet = () =>{
-        const array = [...sets]
-        array.pop()
-        setSets(array)
+    const updateMissingWeight = (index:number) =>{
+
+        const newMissingWeight = {...missingFromWeight}
+            index in newMissingWeight ? delete newMissingWeight[index] : null
+            setMissingFromWeight(newMissingWeight)
     }
+
+   const submit = () => {
+
+        if((Object.keys(setReps).length < 1 && Object.keys(setWeights).length < 1) || (Object.keys(setReps).length != Object.keys(setWeights).length)){
+            
+            const longestDictLength = sets.length
+
+            const newMissingFromReps = {...missingFromReps}
+            const newMissingFromWeight = {...missingFromWeight}
+
+            for(let i = 0; i< longestDictLength; i++){
+                !(i in setReps) ? newMissingFromReps[i] = null : null
+                !(i in setWeights) ? newMissingFromWeight[i] = null : null
+            }
+
+            console.log(newMissingFromReps)
+            console.log(newMissingFromWeight)
+
+            setMissingFromReps(newMissingFromReps)
+            setMissingFromWeight(newMissingFromWeight)
+
+        }else{
+            console.log("good to go")
+        }
+   }
 
     return (
     <div style={{height:"100%"}}>
@@ -54,7 +141,7 @@ export default function Exercise({exercise}:ExerciseProps){
                             style={{
                                 flex: 1, 
                                 borderRight: "2px solid black",
-                                maxWidth:"25%"
+                                maxWidth:"40%"
                             }}
                         >
                             <div style={{width:"100%", height:"10%"}}>
@@ -62,14 +149,33 @@ export default function Exercise({exercise}:ExerciseProps){
                             </div>
                             
                             <div style={{display:"flex", width:"100%", height:"90%", alignItems:"center"}}>
-                                <input placeholder="reps" style={{width:"49%", marginTop:"10%", marginLeft:"10%", marginBottom:"10%", marginRight:"5%"}}/>
+                                <input 
+                                placeholder="reps" 
+                                onChange={(e)=>{updateSetReps(e, index)}} 
+                                style={{width:"49%", 
+                                    marginTop:"10%", 
+                                    marginLeft:"10%", 
+                                    marginBottom:"10%", 
+                                    marginRight:"5%",
+                                    ...(index in missingFromReps ? {border: "1px solid red"}: {})
+                                }}
+                            />
                                 <div style={{display:"flex", alignItems:"center"}}>:</div>
-                                <input placeholder="weight" style={{width:"49%", marginTop:"10%", marginRight:"10%", marginBottom:"10%", marginLeft:"5%"}}/>
+                                <input 
+                                    placeholder="weight" 
+                                    onChange={(e)=>{updateSetWeights(e, index)}} 
+                                    style={{width:"49%", 
+                                    marginTop:"10%", 
+                                    marginRight:"10%", 
+                                    marginBottom:"10%", 
+                                    marginLeft:"5%",
+                                    ...(index in missingFromWeight ? {border: "1px solid red"}: {})
+                                    }}
+                                />
                             </div>
                         </div>
                     ))}
                     </div>
-
 
                     <div style={{width:"10%", borderLeft:"2px solid black"}}>
                         <div style={{width:"100%", height:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
@@ -86,6 +192,16 @@ export default function Exercise({exercise}:ExerciseProps){
             </div>
 
         </section>
+
+        <footer style={{height:"10%", display:"flex", flexDirection:"row"}}>
+                <div style={{width:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+                    <button id="exercise-back-button" onClick={showCards}/>
+                </div>
+
+                <div style={{width:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+                    <button onClick={submit}/>
+                </div>
+        </footer>
         
     </div>
     )

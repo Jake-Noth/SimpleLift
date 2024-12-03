@@ -18,6 +18,10 @@ export default function CoreApp(appProps: cardProps) {
         setScreen(3)
   }
 
+  const showCards = () => {
+    setScreen(1)
+  }
+
   const renderScreen = () => {
     switch (screen) {
         case 1:
@@ -38,7 +42,7 @@ export default function CoreApp(appProps: cardProps) {
             );
         case 3:
             return (
-                    <Exercise exercise={exercise} />
+                    <Exercise exercise={exercise} showCards = {showCards} />
             );
       default:
         return <div>Invalid Screen</div>;

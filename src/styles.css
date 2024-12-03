@@ -267,7 +267,6 @@
     flex-direction: row;
   }
 
-
   #add-set-button {
     background-image: url('public/plus-icon.png');
     background-color: transparent;
@@ -286,6 +285,15 @@
     background-repeat: no-repeat;
     height: 30px;
     width: 30px;
-    
+  }
+
+  #exercise-back-button {
+    background-image: url('public/back-arrow.png');
+    background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height:30px;
+    width:30px;
+    border:none;
   }
 
