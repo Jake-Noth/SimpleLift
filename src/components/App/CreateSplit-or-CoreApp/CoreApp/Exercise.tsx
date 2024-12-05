@@ -17,8 +17,6 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
     const [previousSessions, setPreviousSessions] = useState<{ set: any; weight: any; reps: any; }[][]>([])
     const [date, setDate] = useState<{ instance: any; session_id: any; date_created: any; }[]>([])
 
-    console.log(previousSessions)
-
 
     const {supabase, session} = useSupabase()
 
@@ -136,9 +134,6 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                 console.error('Error inserting set:', error.message);
                 return;
             }
-
-            console.log('inserted set')
-
       }
     }
 
@@ -169,7 +164,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
 
                 if(error){
 
-                    console.log(error.message)
+                    console.error(error.message)
                     return
                 }
 
@@ -178,8 +173,6 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
 
             setPreviousSessions(prevSessions);
             setDate(data)
-        } else {
-        console.log('No matching data found.');
         }
     }
 

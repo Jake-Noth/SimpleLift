@@ -71,7 +71,7 @@ export default function useAddExerciseHelper({
             );
     
             if (newExercises.length === 0) {
-                console.log("No new exercises to add to history.");
+                console.error("No new exercises to add to history.");
                 return;
             }
     

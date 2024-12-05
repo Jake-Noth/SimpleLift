@@ -30,7 +30,7 @@ export function useGenerateCardProps(days:string[], UUIDs:string[], day: string,
         .select('title')
 
         if(error){
-            console.log("Failed to fetch all exercises")
+            console.error("Failed to fetch all exercises")
         }
 
         const titles = data?.map((exercise) => exercise.title) || [];
@@ -67,7 +67,7 @@ export function useGenerateCardProps(days:string[], UUIDs:string[], day: string,
             .eq("day_reference", UUID) as { data: MyExercise[] | null, error: any };
     
         if (error) {
-            console.log("Failed to get exercise data");
+            console.error("Failed to get exercise data");
         } else if (data) {
             const newUUIDDict: Record<string, true> = {};
     

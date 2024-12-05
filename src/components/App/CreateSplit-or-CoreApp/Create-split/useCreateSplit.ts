@@ -13,7 +13,6 @@ export function useCreateSplit(retryFetch:()=> void){
         let newDays = [...days];
         newDays.push('');
         setDays(newDays);
-        console.log('added day')
     };
 
     const setSplit = async (days: string[]) => {
@@ -43,7 +42,7 @@ export function useCreateSplit(retryFetch:()=> void){
             day: day,
         }));
 
-        const { data, error } = await supabase.from('Day').insert(daysData);
+        const { error } = await supabase.from('Day').insert(daysData);
 
         if (error) {
             console.error('Error inserting days:', error);
@@ -51,8 +50,6 @@ export function useCreateSplit(retryFetch:()=> void){
             setLoading(false);
             return;
         }
-
-        console.log('Days inserted successfully:', data);
         retryFetch()
         setLoading(false);
     };
@@ -61,9 +58,6 @@ export function useCreateSplit(retryFetch:()=> void){
         const newItems = [...days.slice(0, index), ...days.slice(index + 1)];
         setDays(newItems);
     };
-
-
-
 
     return {loading, error, addDay, setSplit, removeDay, days, setDays}
 

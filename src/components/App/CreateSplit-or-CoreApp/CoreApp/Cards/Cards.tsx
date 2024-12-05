@@ -31,8 +31,6 @@ export default function cards(props:cardProps){
         changeExerciseDict
     } = useGenerateCardProps(props.days, props.daysUUIDs, props.day, props.setDay);
 
-    console.log(UUID)
-
     return(
         <>
             <Header day = {props.day} showSettings={props.showSettings}/>
