@@ -14,10 +14,9 @@ interface ExerciseDict {
     [key: string]: NestedDict;
 }
 
-export function useGenerateCardProps(days:string[], UUIDs:string[]){
+export function useGenerateCardProps(days:string[], UUIDs:string[], day: string, setDay: React.Dispatch<React.SetStateAction<string>>){
 
-    const [day, setDay] = useState<string>(days[0])
-    const [UUID, setUUIDs] = useState<string>(UUIDs[0])
+    const [UUID, setUUIDs] = useState<string>(UUIDs[days.indexOf(day)])
     const [showAddLiftScreen, setShowAddLiftScreen] = useState(false)
     const [allExercisesInDB, setAllExercisesInDB] = useState<string[]>([])
     const [exerciseDict, setExerciseDict] = useState<ExerciseDict>({})
@@ -114,7 +113,6 @@ export function useGenerateCardProps(days:string[], UUIDs:string[]){
 
 
     return {
-        day, 
         UUID,
         liftScreen:showAddLiftScreen,
         allExercisesInDB,

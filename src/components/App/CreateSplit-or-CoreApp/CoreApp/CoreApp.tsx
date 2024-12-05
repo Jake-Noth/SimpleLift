@@ -29,6 +29,7 @@ export default function CoreApp(appProps: cardProps) {
             return (
             <Cards
                 day={day}
+                setDay = {setDay}
                 days={appProps.days}
                 daysUUIDs={appProps.daysUUIDs}
                 showSettings={() => setScreen(2)}

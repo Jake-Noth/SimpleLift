@@ -10,13 +10,13 @@ interface cardProps{
     daysUUIDs: string[]
     showSettings: () => void
     showExercise: (exercise: string) => void
+    setDay: React.Dispatch<React.SetStateAction<string>>
 }
 
 
 export default function cards(props:cardProps){
 
     const {
-        day,
         UUID,
         liftScreen,
         allExercisesInDB,
@@ -29,11 +29,13 @@ export default function cards(props:cardProps){
         nextDay,
         fetchExercisesForDay,
         changeExerciseDict
-    } = useGenerateCardProps(props.days, props.daysUUIDs);
+    } = useGenerateCardProps(props.days, props.daysUUIDs, props.day, props.setDay);
+
+    console.log(UUID)
 
     return(
         <>
-            <Header day = {day} showSettings={props.showSettings}/>
+            <Header day = {props.day} showSettings={props.showSettings}/>
             
             {liftScreen ? (
                 <AddExercises
