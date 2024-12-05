@@ -14,6 +14,8 @@ export default function CreateSplit({ retryFetch }: SetSplitProps) {
                 <img src="public/logo.png" id="logo" />
             </section>
 
+
+            <div>
             <h1>Create your workout split</h1>
 
             <div id="daysContainer">
@@ -45,6 +47,8 @@ export default function CreateSplit({ retryFetch }: SetSplitProps) {
                     {loading ? 'Saving...' : error ? 'Retry' : 'Continue'}
                 </button>
             </div>
+            </div>
+            
         </>
     );
 }

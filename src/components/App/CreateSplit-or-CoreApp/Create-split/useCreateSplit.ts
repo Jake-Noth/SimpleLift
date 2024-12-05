@@ -17,6 +17,13 @@ export function useCreateSplit(retryFetch:()=> void){
     };
 
     const setSplit = async (days: string[]) => {
+
+        if(days[0] == '' && days.length ==1){
+            alert("You need to enter at least one day")
+            return
+        }
+            
+
         setLoading(true);
         setError(false);
 
