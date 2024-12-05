@@ -15,6 +15,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
     const [missingFromWeight, setMissingFromWeight] = useState<{ [key: number]: null }>({});
     const [exerciseInstance, setExerciseInstance] = useState(1);
     const [previousSessions, setPreviousSessions] = useState<{ set: any; weight: any; reps: any; }[][]>([])
+    const [date, setDate] = useState<{ instance: any; session_id: any; date_created: any; }[]>([])
 
     console.log(previousSessions)
 
@@ -144,7 +145,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
     const get_and_set_exercise_instance = async () => {
         const { data, error } = await supabase
         .from('Exercise_session')
-        .select('instance, session_id')
+        .select('instance, session_id, date_created')
         .eq('user_id', session?.user?.id)
         .eq('exercise', exercise)
         .order('instance', { ascending: false })
@@ -176,6 +177,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
             }
 
             setPreviousSessions(prevSessions);
+            setDate(data)
         } else {
         console.log('No matching data found.');
         }
@@ -221,15 +223,23 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
 
             <div id="previous-sessions-container">
                 {previousSessions.map((sessionData, sessionIndex) => (
-                    <div key={sessionIndex} style={{ width: "100%", height: "30%", border: "2px solid black", display:"flex", flexDirection:"row", justifyContent:"space-between" }}>
-                        {sessionData.map((setData, setIndex) => (
-                        <div key={setIndex} style={{ marginBottom: "10px" }}>
-                            <p>Set {setData.set}</p>
-                            <p>Weight: {setData.weight}</p>
-                            <p>Reps: {setData.reps}</p>
+                    <>
+                        <div key={sessionIndex} style={{ width: "100%", height: "30%", border: "2px solid black", display:"flex", flexDirection:"column", justifyContent:"space-between", paddingLeft:"5px", paddingRight:"5px" }}>
+                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+                                {sessionData.map((setData, setIndex) => (
+                                    <div key={setIndex} style={{ marginBottom: "10px"}}>
+                                        <p>Weight: {setData.weight}</p>
+                                        <p>Reps: {setData.reps}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div style={{paddingBottom:"5px"}}>
+                                {date[sessionIndex].date_created}
+                            </div>
                         </div>
-                        ))}
-                    </div>
+                        
+                    </>
                 ))}
 
             </div>
