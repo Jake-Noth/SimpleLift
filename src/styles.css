@@ -44,9 +44,8 @@
   }
 
   #daysContainer {
-    height: 50vh;
+    height: 80%;
     padding-top: 10px;
-    overflow-y: scroll;
   }
 
   #dayDiv {
@@ -72,7 +71,7 @@
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
-    width: 20px;
+    width: 30px;
     height: 30px;
     border: none;
     margin-left: 10px;

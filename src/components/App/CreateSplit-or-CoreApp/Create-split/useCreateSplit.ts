@@ -18,17 +18,15 @@ export function useCreateSplit(retryFetch:()=> void){
 
     const setSplit = async (days: string[]) => {
 
-        if(days[0] == '' && days.length ==1){
+        let filteredDays = days.filter(day => day !== '');
+        
+        if(filteredDays.length == 0){
             alert("You need to enter at least one day")
             return
         }
-            
-
+        
         setLoading(true);
         setError(false);
-
-        let filteredDays = days.filter(day => day !== '');
-        
 
         const userId = session?.user?.id;
 
