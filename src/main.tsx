@@ -4,9 +4,9 @@ import { SupabaseProvider } from '../useSupaBaseContext.tsx'
 import React from 'react'
 
 createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  
     <SupabaseProvider>
       <App />
     </SupabaseProvider>
-  </React.StrictMode>
+  
 )

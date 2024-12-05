@@ -257,14 +257,16 @@
   }
 
   #previous-sessions-container {
-    height: 75%;
+    height: 65%;
     border-bottom: 2px solid black;
+    overflow-y: scroll;
   }
 
   #new-session-container {
-    height: 25%;
+    height: 15%;
     display: flex;
     flex-direction: row;
+    border-top: 2px solid black;
   }
 
   #add-set-button {

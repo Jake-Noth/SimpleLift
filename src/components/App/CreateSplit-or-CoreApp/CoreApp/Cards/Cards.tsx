@@ -5,6 +5,7 @@ import MyExercises from "./CardComponents/My-Exercises/MyExercises"
 import { useGenerateCardProps } from "./CardComponents/useGenerateCardsProps"
 
 interface cardProps{
+    day: string
     days: string[]
     daysUUIDs: string[]
     showSettings: () => void

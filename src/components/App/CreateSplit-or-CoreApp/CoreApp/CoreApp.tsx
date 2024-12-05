@@ -12,6 +12,7 @@ interface cardProps {
 export default function CoreApp(appProps: cardProps) {
   const [screen, setScreen] = useState(1);
   const [exercise, setExercise] = useState<string>("")
+  const [day, setDay] = useState(appProps.days[0])
 
   const showExercise = (exercise:string) => {
         setExercise(exercise)
@@ -27,6 +28,7 @@ export default function CoreApp(appProps: cardProps) {
         case 1:
             return (
             <Cards
+                day={day}
                 days={appProps.days}
                 daysUUIDs={appProps.daysUUIDs}
                 showSettings={() => setScreen(2)}

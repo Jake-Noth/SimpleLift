@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useSupabase } from "../../../../../useSupaBaseContext";
 
 interface ExerciseProps {
@@ -13,6 +13,11 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
     const [setWeights, setSetWeights] = useState<{ [key: number]: number }>({});
     const [missingFromReps, setMissingFromReps] = useState<{ [key: number]: null }>({});
     const [missingFromWeight, setMissingFromWeight] = useState<{ [key: number]: null }>({});
+    const [exerciseInstance, setExerciseInstance] = useState(1);
+    const [previousSessions, setPreviousSessions] = useState<{ set: any; weight: any; reps: any; }[][]>([])
+
+    console.log(previousSessions)
+
 
     const {supabase, session} = useSupabase()
 
@@ -101,7 +106,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
         .insert([
           {
             exercise: exercise,
-            date_created: new Date
+            date_created: new Date,
+            instance: exerciseInstance
           }
         ])
         .select('session_id')
@@ -135,6 +141,46 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
       }
     }
 
+    const get_and_set_exercise_instance = async () => {
+        const { data, error } = await supabase
+        .from('Exercise_session')
+        .select('instance, session_id')
+        .eq('user_id', session?.user?.id)
+        .eq('exercise', exercise)
+        .order('instance', { ascending: false })
+        
+        if (error) {
+        console.error('Error fetching the greatest instance:', error);
+        } else if (data && data.length > 0) {
+            setExerciseInstance(data[0].instance+1);
+
+            let exerciseSessionData = data
+
+            const prevSessions = []
+            
+            for(let i =0; i<data.length; i++){
+
+                
+                const {data, error} = await supabase
+                .from('sets')
+                .select('set, weight, reps')
+                .eq('session_id', exerciseSessionData[i].session_id)
+
+                if(error){
+
+                    console.log(error.message)
+                    return
+                }
+
+                prevSessions.push(data)
+            }
+
+            setPreviousSessions(prevSessions);
+        } else {
+        console.log('No matching data found.');
+        }
+    }
+
    const submit = () => {
 
         if((Object.keys(setReps).length < 1 && Object.keys(setWeights).length < 1) || (Object.keys(setReps).length != Object.keys(setWeights).length)){
@@ -156,10 +202,15 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
             
 
             uploadDataToSupaBase()
+            showCards()
 
 
         }
    }
+
+   useEffect(()=>{
+        get_and_set_exercise_instance()
+   },[])
 
     return (
     <div style={{height:"100%"}}>
@@ -168,83 +219,118 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
         </header>
         <section className="exercise-graph-container">
 
-            <div id="graph-container">
+            <div id="previous-sessions-container">
+                {previousSessions.map((sessionData, sessionIndex) => (
+                    <div key={sessionIndex} style={{ width: "100%", height: "30%", border: "2px solid black", display:"flex", flexDirection:"row", justifyContent:"space-between" }}>
+                        {sessionData.map((setData, setIndex) => (
+                        <div key={setIndex} style={{ marginBottom: "10px" }}>
+                            <p>Set {setData.set}</p>
+                            <p>Weight: {setData.weight}</p>
+                            <p>Reps: {setData.reps}</p>
+                        </div>
+                        ))}
+                    </div>
+                ))}
 
             </div>
 
-            <div id="sessions-container" >
-                <div id="previous-sessions-container">
+            <div style={{height:"20%"}}></div>
 
-                </div>
+                
+            <div id="new-session-container">
 
-                <div id="new-session-container">
-
-                    <div style={{width:"90%", display:"flex", flexDirection:"row"}}>
-                    {sets.map((_, index) => (
-                        <div
-                            key={index}
-                            style={{
-                                flex: 1, 
-                                borderRight: "2px solid black",
-                                maxWidth:"40%"
+                <div style={{width:"90%", display:"flex", flexDirection:"row"}}>
+                {sets.map((_, index) => (
+                    <div
+                        key={index}
+                        style={{
+                            flex: 1, 
+                            borderRight: "2px solid black",
+                            maxWidth:"40%"
+                        }}
+                    >
+                        <div style={{width:"100%", height:"10%"}}>
+                            Set {index + 1}
+                        </div>
+                        
+                        <div style={{display:"flex", width:"100%", height:"90%", alignItems:"center"}}>
+                            <input
+                            type="number" 
+                            placeholder="reps" 
+                            onChange={(e)=>{updateSetReps(e, index)}} 
+                            style={{width:"49%", 
+                                marginTop:"10%", 
+                                marginLeft:"10%", 
+                                marginBottom:"10%", 
+                                marginRight:"5%",
+                                ...(index in missingFromReps ? {border: "1px solid red"}: {})
                             }}
-                        >
-                            <div style={{width:"100%", height:"10%"}}>
-                                Set {index + 1}
-                            </div>
-                            
-                            <div style={{display:"flex", width:"100%", height:"90%", alignItems:"center"}}>
-                                <input 
-                                placeholder="reps" 
-                                onChange={(e)=>{updateSetReps(e, index)}} 
+                        />
+                            <div style={{display:"flex", alignItems:"center"}}>:</div>
+                            <input 
+                                type="number"
+                                placeholder="weight" 
+                                onChange={(e)=>{updateSetWeights(e, index)}} 
                                 style={{width:"49%", 
-                                    marginTop:"10%", 
-                                    marginLeft:"10%", 
-                                    marginBottom:"10%", 
-                                    marginRight:"5%",
-                                    ...(index in missingFromReps ? {border: "1px solid red"}: {})
+                                marginTop:"10%", 
+                                marginRight:"10%", 
+                                marginBottom:"10%", 
+                                marginLeft:"5%",
+                                ...(index in missingFromWeight ? {border: "1px solid red"}: {})
                                 }}
                             />
-                                <div style={{display:"flex", alignItems:"center"}}>:</div>
-                                <input 
-                                    placeholder="weight" 
-                                    onChange={(e)=>{updateSetWeights(e, index)}} 
-                                    style={{width:"49%", 
-                                    marginTop:"10%", 
-                                    marginRight:"10%", 
-                                    marginBottom:"10%", 
-                                    marginLeft:"5%",
-                                    ...(index in missingFromWeight ? {border: "1px solid red"}: {})
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    ))}
-                    </div>
-
-                    <div style={{width:"10%", borderLeft:"2px solid black"}}>
-                        <div style={{width:"100%", height:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                            <button id="add-set-button" onClick={addSet}/>
-                        </div>
-
-                        <div style={{width:"100%", height:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                            <button id="remove-set-button" onClick={removeSet}/>
                         </div>
                     </div>
-                    
+                ))}
                 </div>
 
+                <div style={{width:"10%", borderLeft:"2px solid black"}}>
+                    <div style={{width:"100%", height:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+                        <button id="add-set-button" onClick={addSet}/>
+                    </div>
+
+                    <div style={{width:"100%", height:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
+                        <button id="remove-set-button" onClick={removeSet}/>
+                    </div>
+                </div>
+                
             </div>
+
+            
 
         </section>
 
         <footer style={{height:"10%", display:"flex", flexDirection:"row"}}>
                 <div style={{width:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                    <button id="exercise-back-button" onClick={showCards}/>
+                    <button 
+                        id="exercise-back-button"
+                        onContextMenu={(e) => e.preventDefault()}
+                        onClick={showCards}
+                    />
                 </div>
 
-                <div style={{width:"50%", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                    <button onClick={submit}/>
+                <div style={{ width: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <button
+                        onContextMenu={(e) => e.preventDefault()}
+                        onClick={submit}
+                        style={{
+                        backgroundColor: "#FFFFFF",
+                        color: "Black",
+                        border: ".5px solid black",
+                        borderRadius: "8px", 
+                        padding: "10px 20px",
+                        fontSize: "16px", 
+                        cursor: "pointer",
+                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                        transition: "background-color 0.3s, transform 0.2s",
+                        }}
+                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "lightgrey")}
+                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "white")}
+                        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+                        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                    >
+                        Log Workout
+                    </button>
                 </div>
         </footer>
         
