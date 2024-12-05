@@ -35,7 +35,16 @@ export default function MyExercises({ exerciseDict, UUID, changeExerciseDict, sh
             )} 
             <div className="exercises-container" >
                 {exercisesArray.map((item, index) => (
-                    <div id="add-exercise-exercise-container" key={index} onClick={() => showExercise(item)}>
+                    <div
+                        id="add-exercise-exercise-container"
+                        key={index}
+                        onClick={() => {
+                            if (!showRemoveExercise) {
+                                showExercise(item); // Only trigger if showRemoveExercise is false
+                            }
+                        }}
+                        style={{ cursor: showRemoveExercise ? "default" : "pointer" }} // Optional: Adjust cursor for disabled state
+                        >
                         {item}
                         {showRemoveExercise && (
                             <input
@@ -50,33 +59,102 @@ export default function MyExercises({ exerciseDict, UUID, changeExerciseDict, sh
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {showRemoveExercise ? (
                     <>
-                        <button
-                            style={{ height: "20px", marginLeft: "10px" }}
-                            onClick={() => {
-                                setShowRemoveExercises(false);
-                                setExercisesToRemove([]);
-                            }}
-                        >
-                            Hide Edit Exercises
-                        </button>
-                        <button
-                            style={{ height: "20px", marginRight: "10px" }}
-                            disabled={exercisesToRemove.length === 0}
-                            onClick={() => {
-                                removeExercises();
-                                setShowRemoveExercises(false);
-                            }}
-                        >
-                            Remove
-                        </button>
-                    </>
+                    <button
+                        onContextMenu={(e) => e.preventDefault()} // Prevent right-click context menu
+                        style={{
+                            height: "40px", // Original height
+                            marginLeft: "10px", // Original margin
+                            backgroundColor: "#FFFFFF",
+                            color: "Black",
+                            border: ".5px solid black",
+                            borderRadius: "8px",
+                            padding: "10px 20px",
+                            fontSize: "16px",
+                            cursor: "pointer",
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                            transition: "background-color 0.3s, transform 0.2s",
+                        }}
+                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "lightgrey")}
+                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "white")}
+                        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+                        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                        onClick={() => {
+                            setShowRemoveExercises(false);
+                            setExercisesToRemove([]);
+                        }}
+                    >
+                        Hide Edit Exercises
+                    </button>
+                
+                    <button
+                        onContextMenu={(e) => e.preventDefault()} // Prevent right-click context menu
+                        style={{
+                            height: "40px", // Original height
+                            marginRight: "10px", // Original margin
+                            backgroundColor: exercisesToRemove.length === 0 ? "#E0E0E0" : "#FFFFFF", // Adjust background for disabled state
+                            color: exercisesToRemove.length === 0 ? "#A0A0A0" : "Black", // Adjust text color for disabled state
+                            border: ".5px solid black",
+                            borderRadius: "8px",
+                            padding: "10px 20px",
+                            fontSize: "16px",
+                            cursor: exercisesToRemove.length === 0 ? "not-allowed" : "pointer", // Change cursor for disabled state
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                            transition: "background-color 0.3s, transform 0.2s",
+                        }}
+                        onMouseOver={(e) => {
+                            if (exercisesToRemove.length !== 0) {
+                                e.currentTarget.style.backgroundColor = "lightgrey";
+                            }
+                        }}
+                        onMouseOut={(e) => {
+                            if (exercisesToRemove.length !== 0) {
+                                e.currentTarget.style.backgroundColor = "white";
+                            }
+                        }}
+                        onMouseDown={(e) => {
+                            if (exercisesToRemove.length !== 0) {
+                                e.currentTarget.style.transform = "scale(0.95)";
+                            }
+                        }}
+                        onMouseUp={(e) => {
+                            if (exercisesToRemove.length !== 0) {
+                                e.currentTarget.style.transform = "scale(1)";
+                            }
+                        }}
+                        disabled={exercisesToRemove.length === 0} // Original disabled condition
+                        onClick={() => {
+                            removeExercises();
+                            setShowRemoveExercises(false);
+                        }}
+                    >
+                        Remove
+                    </button>
+                </>
                 ) : (
                     <button
-                        style={{ height: "20px", marginLeft: "10px" }}
-                        onClick={() => setShowRemoveExercises(true)}
+                        onContextMenu={(e) => e.preventDefault()} // Prevent right-click context menu
+                        style={{
+                            height: "40px", // Original height
+                            marginLeft: "10px", // Original margin
+                            backgroundColor: "#FFFFFF",
+                            color: "Black",
+                            border: ".5px solid black",
+                            borderRadius: "8px",
+                            padding: "10px 20px",
+                            fontSize: "16px",
+                            cursor: "pointer",
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                            transition: "background-color 0.3s, transform 0.2s",
+                        }}
+                        onClick={() => setShowRemoveExercises(true)} // Keep the original functionality
+                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "lightgrey")}
+                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "white")}
+                        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+                        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     >
                         Edit Exercises
                     </button>
+                    
                 )}
             </div>
         </>

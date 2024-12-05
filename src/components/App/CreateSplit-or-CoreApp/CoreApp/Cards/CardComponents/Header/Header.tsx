@@ -14,7 +14,11 @@ export default function Header({day, showSettings}:headerProps){
                 </div>
                 
                 <div id="settings-button-container">
-                    <button className = "cogButton" onClick={showSettings}></button>
+                    <button 
+                        className = "cogButton" 
+                        onClick={showSettings}
+                        onContextMenu={(e) => e.preventDefault()}
+                    ></button>
                 </div>
                 
             </div>

@@ -15,19 +15,36 @@ export default function BottomAppBar({showAddLiftScreen, hideAddLiftScreen, addL
     return(
         <div id="bottom-bar-container">
             <div id="left-button-container">
-                <button id="left-arrow-button" onClick={prevDay}></button>
+                <button 
+                    id="left-arrow-button" 
+                    onClick={prevDay}
+                    onContextMenu={(e) => e.preventDefault()}
+                ></button>
             </div>
             
             <div id="add-button-container">
-                {addLiftScreenBackButton ? <button id="down-arrow-button" onClick={hideAddLiftScreen}></button>
+                {addLiftScreenBackButton ? 
+                    <button 
+                        id="down-arrow-button" 
+                        onClick={hideAddLiftScreen}
+                        onContextMenu={(e) => e.preventDefault()}
+                    ></button>
                 :
-                <button id="add-button" onClick={showAddLiftScreen}></button>
+                <button 
+                    id="add-button" 
+                    onClick={showAddLiftScreen}
+                    onContextMenu={(e) => e.preventDefault()}
+                ></button>
                 }
                 
             </div>
 
             <div id="right-button-container">
-                <button id="right-arrow-button" onClick={nextDay}></button>
+                <button 
+                    id="right-arrow-button" 
+                    onClick={nextDay}
+                    onContextMenu={(e) => e.preventDefault()}
+                ></button>
             </div>
         </div>
     )

@@ -306,6 +306,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                         id="exercise-back-button"
                         onContextMenu={(e) => e.preventDefault()}
                         onClick={showCards}
+                        onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
+                        onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     />
                 </div>
 
