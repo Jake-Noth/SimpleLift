@@ -2,7 +2,7 @@
   "name": "mysplitnotebook",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://jake-noth.github.io/simplelift", 
+  "homepage": "https://Jake-Noth.github.io/SimpleLift", 
   "type": "module",
   "scripts": {
     "dev": "vite",
