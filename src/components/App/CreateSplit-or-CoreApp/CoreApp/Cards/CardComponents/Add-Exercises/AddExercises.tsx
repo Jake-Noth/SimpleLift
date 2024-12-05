@@ -26,7 +26,7 @@ export default function AddExercises({
 }: AddExercisesProps) {
     const {
         exercisesToBeAdded,
-        filteredExercises, // Use filtered array
+        filteredExercises,
         searchTerm,
         setSearchTerm,
         manageCheckBox,
@@ -76,19 +76,19 @@ export default function AddExercises({
                 }}
             >
                 <button
-                    onContextMenu={(e) => e.preventDefault()} // Prevent right-click context menu
+                    onContextMenu={(e) => e.preventDefault()}
                     style={{
-                        backgroundColor: exercisesToBeAdded.length === 0 ? "#E0E0E0" : "#FFFFFF", // Light grey for disabled
-                        color: exercisesToBeAdded.length === 0 ? "#A0A0A0" : "Black", // Grey text for disabled
+                        backgroundColor: exercisesToBeAdded.length === 0 ? "#E0E0E0" : "#FFFFFF",
+                        color: exercisesToBeAdded.length === 0 ? "#A0A0A0" : "Black",
                         border: ".5px solid black",
                         borderRadius: "8px",
                         padding: "10px 20px",
                         fontSize: "16px",
-                        cursor: exercisesToBeAdded.length === 0 ? "not-allowed" : "pointer", // Disabled cursor
+                        cursor: exercisesToBeAdded.length === 0 ? "not-allowed" : "pointer",
                         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                         transition: "background-color 0.3s, transform 0.2s",
                     }}
-                    disabled={exercisesToBeAdded.length === 0} // Keep the original disabled logic
+                    disabled={exercisesToBeAdded.length === 0}
                     onMouseOver={(e) => {
                         if (exercisesToBeAdded.length !== 0) {
                             e.currentTarget.style.backgroundColor = "lightgrey";
@@ -109,7 +109,7 @@ export default function AddExercises({
                             e.currentTarget.style.transform = "scale(1)";
                         }
                     }}
-                    onClick={addExercisesToDay} // Original onClick functionality
+                    onClick={addExercisesToDay}
                 >
                     Add Exercises
                 </button>
