@@ -55,7 +55,7 @@
   }
 
   #deleteButton {
-    background-image: url('public/redMinus.png');
+    background-image: url('/redMinus.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -67,7 +67,7 @@
   }
 
   #addButton {
-    background-image: url('public/plus-icon.png');
+    background-image: url('/plus-icon.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -82,7 +82,7 @@
     height: 40px;
     border: none;
     background-color: transparent;
-    background-image: url('public/settings-cog.png'); /* Add your SVG cog image */
+    background-image: url('/settings-cog.png'); /* Add your SVG cog image */
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -183,7 +183,7 @@
 
   #left-arrow-button {
     border: none;
-    background-image: url('public/nav-arrow.png');
+    background-image: url('/nav-arrow.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -201,7 +201,7 @@
 
   #add-button {
     border: none;
-    background-image: url('public/plus-icon.png');
+    background-image: url('/plus-icon.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -211,7 +211,7 @@
 
   #down-arrow-button {
     border: none;
-    background-image: url('public/minus-sign.png');
+    background-image: url('/minus-sign.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -229,7 +229,7 @@
 
   #right-arrow-button {
     border: none;
-    background-image: url('public/nav-arrow.png');
+    background-image: url('/nav-arrow.png');
     transform: scaleX(-1);
     background-color: transparent;
     background-size: contain;
@@ -269,7 +269,7 @@
   }
 
   #add-set-button {
-    background-image: url('public/plus-icon.png');
+    background-image: url('/plus-icon.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -280,7 +280,7 @@
 
   #remove-set-button{
     border: none;
-    background-image: url('public/minus-sign.png');
+    background-image: url('/minus-sign.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
@@ -289,7 +289,7 @@
   }
 
   #exercise-back-button {
-    background-image: url('public/back-arrow.png');
+    background-image: url('/back-arrow.png');
     background-color: transparent;
     background-size: contain;
     background-repeat: no-repeat;
