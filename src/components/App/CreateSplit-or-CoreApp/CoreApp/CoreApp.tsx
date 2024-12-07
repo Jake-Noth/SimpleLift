@@ -2,6 +2,7 @@ import { useState } from "react";
 import SettingsPage from "./SettingsPage";
 import Cards from "./Cards/Cards";
 import Exercise from "./Exercise";
+import { ExerciseState } from "./ExerciseState"
 
 interface cardProps {
   days: string[];
@@ -13,6 +14,7 @@ export default function CoreApp(appProps: cardProps) {
   const [screen, setScreen] = useState(1);
   const [exercise, setExercise] = useState<string>("")
   const [day, setDay] = useState(appProps.days[0])
+  const exerciseState = new ExerciseState()
 
   const showExercise = (exercise:string) => {
         setExercise(exercise)

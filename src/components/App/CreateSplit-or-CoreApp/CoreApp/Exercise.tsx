@@ -9,8 +9,8 @@ interface ExerciseProps {
 export default function Exercise({exercise, showCards}:ExerciseProps){
 
     const [sets, setSets] = useState<number[]>([1]);
-    const [setReps, setSetReps] = useState<{ [key: number]: number }>({});
-    const [setWeights, setSetWeights] = useState<{ [key: number]: number }>({});
+    const [sessionReps, setSessionReps] = useState<{ [key: number]: number }>({});
+    const [sessionWeights, setSessionWeights] = useState<{ [key: number]: number }>({});
     const [missingFromReps, setMissingFromReps] = useState<{ [key: number]: null }>({});
     const [missingFromWeight, setMissingFromWeight] = useState<{ [key: number]: null }>({});
     const [exerciseInstance, setExerciseInstance] = useState(1);
@@ -27,8 +27,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
     const removeSet = () => {
 
         if(sets.length > 1){
-            const new_reps = { ...setReps };
-            const new_weights = { ...setWeights };
+            const new_reps = { ...sessionReps };
+            const new_weights = { ...sessionWeights };
         
             const index = sets.length - 1;
         
@@ -38,49 +38,49 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
             updateMissingReps(index)
             updateMissingWeight(index)
         
-            setSetReps(new_reps);
-            setSetWeights(new_weights);
+            setSessionReps(new_reps);
+            setSessionWeights(new_weights);
         
             setSets((prevSets) => prevSets.slice(0, -1));
         }
         
     };
 
-    const updateSetReps = (
+    const updateSessionReps = (
         event: React.ChangeEvent<HTMLInputElement>,
         index: number
     ) => {
 
         if(event.target.value){
-            const newReps = { ...setReps };
+            const newReps = { ...sessionReps };
             newReps[index] = parseInt(event.target.value, 10)
-            setSetReps(newReps);
+            setSessionReps(newReps);
 
             updateMissingReps(index)
         }
         else{
-            const newReps = { ...setReps};
+            const newReps = { ...sessionReps};
             delete newReps[index]
-            setSetReps(newReps)
+            setSessionReps(newReps)
         }
 
     };
 
-    const updateSetWeights = (
+    const updateSessionWeights = (
         event: React.ChangeEvent<HTMLInputElement>,
         index: number
     ) => {
         if(event.target.value){
-            const newWeights = { ...setWeights };
+            const newWeights = { ...sessionWeights };
             newWeights[index] = parseInt(event.target.value, 10)
-            setSetWeights(newWeights);
+            setSessionWeights(newWeights);
 
             updateMissingWeight(index)
 
         }else{
-            const newWeights = { ...setWeights };
+            const newWeights = { ...sessionWeights };
             delete newWeights[index]
-            setSetWeights(newWeights);
+            setSessionWeights(newWeights);
         }
         
         
@@ -117,7 +117,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
         return;
       }
 
-      for(let i =0; i< Object.keys(setReps).length;i++){
+      for(let i =0; i< Object.keys(sessionReps).length;i++){
         
             const { error} = await supabase
             .from('sets')
@@ -125,8 +125,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                 {
                     session_id: data.session_id,
                     set: i+1,
-                    weight: setWeights[i],
-                    reps: setReps[i]
+                    weight: sessionWeights[i],
+                    reps: sessionReps[i]
                 }
             ])
 
@@ -178,7 +178,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
 
    const submit = () => {
 
-        if((Object.keys(setReps).length < 1 && Object.keys(setWeights).length < 1) || (Object.keys(setReps).length != Object.keys(setWeights).length)){
+        if((Object.keys(sessionReps).length < 1 && Object.keys(sessionWeights).length < 1) || (Object.keys(sessionReps).length != Object.keys(sessionWeights).length)){
             
             const longestDictLength = sets.length
 
@@ -186,8 +186,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
             const newMissingFromWeight = {...missingFromWeight}
 
             for(let i = 0; i< longestDictLength; i++){
-                !(i in setReps) ? newMissingFromReps[i] = null : null
-                !(i in setWeights) ? newMissingFromWeight[i] = null : null
+                !(i in sessionReps) ? newMissingFromReps[i] = null : null
+                !(i in sessionWeights) ? newMissingFromWeight[i] = null : null
             }
 
             setMissingFromReps(newMissingFromReps)
@@ -260,7 +260,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                             <input
                             type="number" 
                             placeholder="reps" 
-                            onChange={(e)=>{updateSetReps(e, index)}} 
+                            onChange={(e)=>{updateSessionReps(e, index)}} 
                             style={{width:"49%", 
                                 marginTop:"10%", 
                                 marginLeft:"10%", 
@@ -273,7 +273,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                             <input 
                                 type="number"
                                 placeholder="weight" 
-                                onChange={(e)=>{updateSetWeights(e, index)}} 
+                                onChange={(e)=>{updateSessionWeights(e, index)}} 
                                 style={{width:"49%", 
                                 marginTop:"10%", 
                                 marginRight:"10%", 
