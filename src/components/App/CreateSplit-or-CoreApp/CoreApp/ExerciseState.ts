@@ -42,6 +42,8 @@ export class ExerciseState{
             'sessionWeights': this.sessionWeights
         }
 
+        console.log(state)
+
         localStorage.setItem('exerciseState', JSON.stringify(state))
     }
 
@@ -70,6 +72,42 @@ export class ExerciseState{
     public setSessionWeights(sessionWeights:{[key: number]: number}){
         this.sessionWeights = sessionWeights
         this.setLocalStorage()
+    }
+
+    public hasPreviousState(){
+        return this.exercise ? true : false
+    }
+
+    public getExercise(): string {
+        return this.exercise;
+    }
+
+    public getSets(): number[] {
+        console.log(this.sets)
+        return this.sets;
+    }
+
+    public getSessionReps(): {[key: number]: number} {
+        return this.sessionReps;
+    }
+
+    public getSessionWeights(): {[key: number]: number} {
+        return this.sessionWeights;
+    }
+
+    public reset(){
+        this.exercise = ""
+        this.sets = []
+        this.sessionReps = {}
+        this.sessionWeights = {}
+        this.setLocalStorage()
+    }
+
+    public toString(){
+        console.log(this.exercise)
+        console.log(this.sets)
+        console.log(this.sessionReps)
+        console.log(this.sessionWeights)
     }
 
 }

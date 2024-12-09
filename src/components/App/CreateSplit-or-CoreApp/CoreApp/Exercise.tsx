@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react"
 import { useSupabase } from "../../../../../useSupaBaseContext";
+import { ExerciseState } from "./ExerciseState";
 
 interface ExerciseProps {
-    exercise: string
+    exercisePassed: string
     showCards: () => void
+    exerciseState: ExerciseState
 }
 
-export default function Exercise({exercise, showCards}:ExerciseProps){
+export default function Exercise({exercisePassed, showCards, exerciseState}:ExerciseProps){
 
+    const exercise = exerciseState.hasPreviousState() ? exerciseState.getExercise() : exercisePassed
     const [sets, setSets] = useState<number[]>([1]);
     const [sessionReps, setSessionReps] = useState<{ [key: number]: number }>({});
     const [sessionWeights, setSessionWeights] = useState<{ [key: number]: number }>({});
@@ -17,11 +20,13 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
     const [previousSessions, setPreviousSessions] = useState<{ set: any; weight: any; reps: any; }[][]>([])
     const [date, setDate] = useState<{ instance: any; session_id: any; date_created: any; }[]>([])
 
-
     const {supabase, session} = useSupabase()
 
     const addSet = () => {
-        setSets((prevSets) => [...prevSets, prevSets.length + 1]);
+
+        const result = [...sets, sets.length + 1]
+        exerciseState.setSets(result)
+        setSets(result);
     };
 
     const removeSet = () => {
@@ -40,8 +45,10 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
         
             setSessionReps(new_reps);
             setSessionWeights(new_weights);
-        
-            setSets((prevSets) => prevSets.slice(0, -1));
+            
+            const result = sets.slice(0, -1)
+            exerciseState.setSets(result)
+            setSets(result);
         }
         
     };
@@ -55,12 +62,13 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
             const newReps = { ...sessionReps };
             newReps[index] = parseInt(event.target.value, 10)
             setSessionReps(newReps);
-
+            exerciseState.setSessionReps(newReps)
             updateMissingReps(index)
         }
         else{
             const newReps = { ...sessionReps};
             delete newReps[index]
+            exerciseState.setSessionReps(newReps)
             setSessionReps(newReps)
         }
 
@@ -73,6 +81,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
         if(event.target.value){
             const newWeights = { ...sessionWeights };
             newWeights[index] = parseInt(event.target.value, 10)
+            exerciseState.setSessionWeights(newWeights)
             setSessionWeights(newWeights);
 
             updateMissingWeight(index)
@@ -80,6 +89,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
         }else{
             const newWeights = { ...sessionWeights };
             delete newWeights[index]
+            exerciseState.setSessionWeights(newWeights)
+
             setSessionWeights(newWeights);
         }
         
@@ -205,6 +216,17 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
 
    useEffect(()=>{
         get_and_set_exercise_instance()
+
+        if(exerciseState.hasPreviousState()){
+            setSets(exerciseState.getSets())
+            setSessionReps(exerciseState.getSessionReps())
+            setSessionWeights(exerciseState.getSessionWeights())
+        }else{
+            exerciseState.setExercise(exercise)
+            exerciseState.setSets(sets)
+            exerciseState.setSessionReps(sessionReps)
+            exerciseState.setSessionWeights(sessionWeights)
+        }
    },[])
 
     return (
@@ -214,28 +236,24 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
         </header>
         <section className="exercise-graph-container">
 
-            <div id="previous-sessions-container">
-                {previousSessions.map((sessionData, sessionIndex) => (
-                    <>
-                        <div key={sessionIndex} style={{ width: "100%", height: "30%", border: "2px solid black", display:"flex", flexDirection:"column", justifyContent:"space-between", paddingLeft:"5px", paddingRight:"5px" }}>
-                            <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-                                {sessionData.map((setData, setIndex) => (
-                                    <div key={setIndex} style={{ marginBottom: "10px"}}>
-                                        <p>Weight: {setData.weight}</p>
-                                        <p>Reps: {setData.reps}</p>
-                                    </div>
-                                ))}
+        <div id="previous-sessions-container">
+            {previousSessions.map((sessionData, sessionIndex) => (
+                <div key={sessionIndex} style={{ width: "100%", height: "30%", border: "2px solid black", display: "flex", flexDirection: "column", justifyContent: "space-between", paddingLeft: "5px", paddingRight: "5px" }}>
+                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                        {sessionData.map((setData, setIndex) => (
+                            <div key={setIndex} style={{ marginBottom: "10px" }}>
+                                <p>Weight: {setData.weight}</p>
+                                <p>Reps: {setData.reps}</p>
                             </div>
+                        ))}
+                    </div>
 
-                            <div style={{paddingBottom:"5px"}}>
-                                {date[sessionIndex].date_created}
-                            </div>
-                        </div>
-                        
-                    </>
-                ))}
-
-            </div>
+                    <div style={{ paddingBottom: "5px" }}>
+                        {date[sessionIndex].date_created}
+                    </div>
+                </div>
+            ))}
+        </div>
 
             <div style={{height:"20%"}}></div>
 
@@ -259,7 +277,8 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                         <div style={{display:"flex", width:"100%", height:"90%", alignItems:"center"}}>
                             <input
                             type="number" 
-                            placeholder="reps" 
+                            placeholder="reps"
+                            value={sessionReps[index] ?? ""}
                             onChange={(e)=>{updateSessionReps(e, index)}} 
                             style={{width:"49%", 
                                 marginTop:"10%", 
@@ -273,6 +292,7 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                             <input 
                                 type="number"
                                 placeholder="weight" 
+                                value = {sessionWeights[index] ?? ""}
                                 onChange={(e)=>{updateSessionWeights(e, index)}} 
                                 style={{width:"49%", 
                                 marginTop:"10%", 
@@ -308,7 +328,11 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                     <button 
                         id="exercise-back-button"
                         onContextMenu={(e) => e.preventDefault()}
-                        onClick={showCards}
+                        onClick={() => {
+                            showCards();
+                            exerciseState.reset();
+                        }}
+                        
                         onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
                         onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
                     />
@@ -317,7 +341,10 @@ export default function Exercise({exercise, showCards}:ExerciseProps){
                 <div style={{ width: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <button
                         onContextMenu={(e) => e.preventDefault()}
-                        onClick={submit}
+                        onClick={()=>{
+                            submit()
+                            exerciseState.reset()
+                        }}
                         style={{
                         backgroundColor: "#FFFFFF",
                         color: "Black",

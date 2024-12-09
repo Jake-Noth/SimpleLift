@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SettingsPage from "./SettingsPage";
 import Cards from "./Cards/Cards";
 import Exercise from "./Exercise";
@@ -14,8 +14,9 @@ export default function CoreApp(appProps: cardProps) {
   const [screen, setScreen] = useState(1);
   const [exercise, setExercise] = useState<string>("")
   const [day, setDay] = useState(appProps.days[0])
-  const exerciseState = new ExerciseState()
-
+  const exerciseState = useMemo(() => new ExerciseState(), []);
+  exerciseState.toString()
+  
   const showExercise = (exercise:string) => {
         setExercise(exercise)
         setScreen(3)
@@ -24,6 +25,12 @@ export default function CoreApp(appProps: cardProps) {
   const showCards = () => {
     setScreen(1)
   }
+
+  useEffect(()=>{
+    if(exerciseState.hasPreviousState()){
+      setScreen(3)
+    }
+  },[])
 
   const renderScreen = () => {
     switch (screen) {
@@ -47,12 +54,12 @@ export default function CoreApp(appProps: cardProps) {
             );
         case 3:
             return (
-                    <Exercise exercise={exercise} showCards = {showCards} />
+                    <Exercise exercisePassed={exercise} showCards = {showCards} exerciseState = {exerciseState} />
             );
       default:
         return <div>Invalid Screen</div>;
     }
   };
 
-  return <>{renderScreen()}</>;
+  return renderScreen();
 }
